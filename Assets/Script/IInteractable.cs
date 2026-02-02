@@ -8,4 +8,6 @@ public interface IInteractable
 
     void Interact(PlayerInteractor player);
 
+    void EscapeInteract(PlayerInteractor player);
+
 }

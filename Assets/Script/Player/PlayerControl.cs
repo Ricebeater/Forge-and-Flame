@@ -44,28 +44,12 @@ public class PlayerControl : MonoBehaviour
     }
 
     void Update()
-    { 
-        if (escapeAction.WasPressedThisFrame())
-        {
-            if (isWorkingAtStation)
-            {
-                Debug.Log("Exiting station");
-                isWorkingAtStation = false;
-                rb.isKinematic = false;
-                DisableMouseCursor();
-            }
-        }
-
-        if (isWorkingAtStation) 
-        {
-            EnableMouseCursor();
-            return;
-        }
-        else
-        {
-            DisableMouseCursor();
-        }
-
+    {
+        if (!isWorkingAtStation) 
+        {  DisableMouseCursor(); }
+        else 
+        { EnableMouseCursor(); }
+        
         Looking();
         rb.linearDamping = isWalking ? groundDragMove : groundDragStop;
 
@@ -73,17 +57,7 @@ public class PlayerControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isWorkingAtStation) 
-        {
-            EnableMouseCursor();
-            return;
-        }
-        else
-        {
-            DisableMouseCursor();
-        }
-
-            Walking();
+        Walking();
     }
 
     private void Walking()
@@ -105,6 +79,8 @@ public class PlayerControl : MonoBehaviour
     private float yRotation;
     private void Looking()
     {
+        if(isWorkingAtStation) return;
+
         Vector2 mouseDelta = lookAction.ReadValue<Vector2>();
 
         yRotation += mouseDelta.x * camRotateSpeed;
@@ -142,14 +118,23 @@ public class PlayerControl : MonoBehaviour
 
     #endregion
 
+    public void GetOutOfStation()
+    {
+        isWorkingAtStation = false;
+        rb.isKinematic = false;
+        //DisableMouseCursor();
+    }
+
     public void AlignToStation(Transform target, float duration)
     {
+        //EnableMouseCursor();
         StartCoroutine(AlignToStationRoutine(target, duration));
     }
 
     private IEnumerator AlignToStationRoutine(Transform target, float duration)
     {
         isWorkingAtStation = true;
+
         
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;

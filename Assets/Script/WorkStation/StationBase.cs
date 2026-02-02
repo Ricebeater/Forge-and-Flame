@@ -20,4 +20,15 @@ public class StationBase : BaseInteractable
             }
         }
     }
+
+    public override void EscapeInteract(PlayerInteractor player)
+    {
+        PlayerControl control = player.GetComponent<PlayerControl>();
+
+        if (control != null)
+        {
+            Debug.Log("Get out from " + gameObject.name + " Station");
+            control.GetOutOfStation();
+        }
+    }
 }

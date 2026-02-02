@@ -6,12 +6,12 @@ public class PlayerInteractor : MonoBehaviour
 {
     public InputActionAsset inputActions;
     private InputAction interactAction;
+    private InputAction escapeAction;
 
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactLayerMask;
 
     private IInteractable currentInteractable;
-    public IInteractable _currentInteractable => currentInteractable;
 
     [SerializeField] private Transform orientation;
 
@@ -32,6 +32,7 @@ public class PlayerInteractor : MonoBehaviour
     private void Awake()
     {
         interactAction = InputSystem.actions.FindAction("Interact");
+        escapeAction = InputSystem.actions.FindAction("Escape");
         playerControl = GetComponent<PlayerControl>();
     }
     #endregion
@@ -46,21 +47,30 @@ public class PlayerInteractor : MonoBehaviour
 
             if (currentInteractable != null)
             {
+                currentInteractable.OnHoverExit();
+
                 currentInteractable.Interact(this);
             }
 
+        }
+
+        if (escapeAction.WasPressedThisFrame())
+        {
+            Debug.Log("Escape pressed");
+
+            if (currentInteractable != null)
+            {
+                currentInteractable.EscapeInteract(this);
+            }
         }
     }
 
     private void GetLookedAtObject()
     {
-        float interactRangeMultiplier = 1f;
-
-        //disable interaction when working at station
-        interactRangeMultiplier = playerControl._isWorkingAtStation ? 0f : 1f;
+        if (playerControl._isWorkingAtStation) { return; }
 
         RaycastHit hit;
-        if (Physics.Raycast(orientation.transform.position, orientation.transform.forward, out hit, interactRange * interactRangeMultiplier, interactLayerMask))
+        if (Physics.Raycast(orientation.transform.position, orientation.transform.forward, out hit, interactRange, interactLayerMask))
         {
             if (hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
@@ -88,6 +98,4 @@ public class PlayerInteractor : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawRay(orientation.transform.position, orientation.transform.forward * interactRange);
     }
-
-
 }

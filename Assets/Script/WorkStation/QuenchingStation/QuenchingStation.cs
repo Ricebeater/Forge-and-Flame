@@ -16,4 +16,13 @@ public class QuenchingStation : StationBase
             gameScript.StartMinigame();
         }
     }
+
+    public override void EscapeInteract(PlayerInteractor player)
+    {
+        base.EscapeInteract(player);
+        if (gameScript != null)
+        {
+            gameScript.EndMinigame();
+        }
+    }
 }

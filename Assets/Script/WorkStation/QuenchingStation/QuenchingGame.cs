@@ -11,7 +11,7 @@ public class QuenchingGame : MonoBehaviour
     [SerializeField] private float chargeRate = 1f;
     [SerializeField] private float minChargeNeed;
     [SerializeField] private float maxChargeNeed;
-    private bool isMinigameActive = false;
+    [SerializeField]private bool isMinigameActive = false;
 
     [Header("Checker")]
     [SerializeField] private bool isMaxedOut = false;
@@ -35,7 +35,8 @@ public class QuenchingGame : MonoBehaviour
 
     private void Update()
     {
-        //temporary lock check
+        HandleUI(isMinigameActive);
+        
         if (!isMinigameActive) { return; }
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
@@ -63,12 +64,18 @@ public class QuenchingGame : MonoBehaviour
             StopCharging();
         }
 
-        HandleUI(isMinigameActive);
+       
     }
 
     public void StartMinigame()
     {
         isMinigameActive = true;
+        currentCharge = 0f;
+    }
+
+    public void EndMinigame()
+    {
+        isMinigameActive = false;
         currentCharge = 0f;
     }
 
@@ -122,11 +129,12 @@ public class QuenchingGame : MonoBehaviour
                 minRatio * 1000f
                 );
         }
-        else
+        else if (!isMinigameActive)
         {
             miniGameUI.SetActive(false);
             chargeText.enabled = false;
             chargeBar.enabled = false;
         }
     }
+
 }

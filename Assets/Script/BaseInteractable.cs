@@ -16,6 +16,7 @@ public abstract class BaseInteractable : MonoBehaviour, IInteractable
     }
 
     public abstract void Interact(PlayerInteractor player);
+    public abstract void EscapeInteract(PlayerInteractor player);
 
     public void OnHoverEnter()
     {
