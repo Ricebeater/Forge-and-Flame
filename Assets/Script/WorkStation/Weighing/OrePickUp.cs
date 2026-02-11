@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class OrePickUp : MonoBehaviour
 {
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private Collider dragZone;
     private Rigidbody rb;
 
@@ -86,6 +86,6 @@ public class OrePickUp : MonoBehaviour
     private Ray GetMousePosition()
     {
         Vector2 mousePsition = Mouse.current.position.ReadValue();
-        return camera.ScreenPointToRay(mousePsition);
+        return playerCamera.ScreenPointToRay(mousePsition);
     }
 }

@@ -16,7 +16,7 @@ public class PlayerControl : MonoBehaviour
     [Header("Player Camera")]
     [SerializeField, Range(0.01f, 1.00f)] private float camRotateSpeed;
     [SerializeField] private Transform orientation;
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera playerCamera;
 
     [SerializeField] private bool isWorkingAtStation;
     [HideInInspector] public bool _isWorkingAtStation => isWorkingAtStation;
@@ -88,7 +88,7 @@ public class PlayerControl : MonoBehaviour
 
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        camera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        playerCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
         orientation.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
@@ -161,7 +161,7 @@ public class PlayerControl : MonoBehaviour
             xRotation = Mathf.LerpAngle(startX, targetX, t);
             yRotation = Mathf.LerpAngle(startY, targetY, t);
 
-            camera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
+            playerCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
             orientation.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
             timeElapsed += Time.deltaTime;
@@ -174,7 +174,7 @@ public class PlayerControl : MonoBehaviour
         xRotation = targetX;
         yRotation = target.eulerAngles.y;
 
-        camera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        playerCamera.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
         orientation.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
 
     }
