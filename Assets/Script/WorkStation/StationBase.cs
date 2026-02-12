@@ -4,7 +4,6 @@ public class StationBase : BaseInteractable
 {
     [SerializeField] private Transform playerStayPosition;
     [SerializeField] private float trasitionDuration = 0.4f;
-    [SerializeField] private QuenchingGame gameScript;
 
     public override void Interact(PlayerInteractor player)
     {
@@ -12,17 +11,13 @@ public class StationBase : BaseInteractable
 
         if (playerStayPosition != null)
         {
+
             PlayerControl control = player.GetComponent<PlayerControl>();
 
             if (control != null)
             {
                 control.AlignToStation(playerStayPosition, trasitionDuration);
             }
-        }
-
-        if (gameScript != null)
-        {
-            gameScript.StartMinigame();
         }
     }
 
@@ -34,11 +29,6 @@ public class StationBase : BaseInteractable
         {
             Debug.Log("Get out from " + gameObject.name + " Station");
             control.GetOutOfStation();
-        }
-
-        if (gameScript != null)
-        {
-            gameScript.EndMinigame();
         }
     }
 }
