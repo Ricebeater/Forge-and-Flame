@@ -49,7 +49,6 @@ public class SmeltingGame : MonoBehaviour
             currentHeat += heatIncreaseRate;
         }
 
-        
     }
 
     private void HandleUI()

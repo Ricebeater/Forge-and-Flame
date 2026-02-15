@@ -12,8 +12,13 @@ public class QuenchingGame : MonoBehaviour
     [SerializeField] private float minChargeNeed;
     [SerializeField] private float maxChargeNeed;
     [SerializeField]private bool isMinigameActive = false;
+    [SerializeField]private int roundRequire = 3;
+    
+    //scoring
+    private int currentRound = 0;
+    private float[] roundScore;
 
-    [Header("Checker")]
+    [Header("Debug")]
     [SerializeField] private bool isMaxedOut = false;
     public float currentChargeRate;
 
@@ -28,7 +33,10 @@ public class QuenchingGame : MonoBehaviour
 
     private void Start()
     {
+        roundScore = new float[roundRequire];
+
         currentCharge = 0f;
+        currentRound = 0;
         chargeBar.fillAmount = 0f;
         miniGameUI.SetActive(false);
     }
@@ -62,6 +70,14 @@ public class QuenchingGame : MonoBehaviour
         if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
             StopCharging();
+
+            currentRound++;
+
+             if (currentRound >= roundRequire)
+             {
+                 CalculateScore();
+                 currentRound = 0;
+            }
         }
 
        
@@ -69,36 +85,70 @@ public class QuenchingGame : MonoBehaviour
 
     public void StartMinigame()
     {
+        roundScore = new float[roundRequire];
         isMinigameActive = true;
         currentCharge = 0f;
+        currentRound = 0;
     }
 
     public void EndMinigame()
     {
         isMinigameActive = false;
         currentCharge = 0f;
+        currentRound = 0;
+
     }
 
     private void StopCharging()
     {
         isCharging = false;
-        if (currentCharge < minChargeNeed) { Debug.Log("To Fast!"); }
-        if (currentCharge >= minChargeNeed && currentCharge <= maxChargeNeed) { Debug.Log("Just right!"); }
-        if (currentCharge > maxChargeNeed) { Debug.Log("To Slow"); }
-    }
 
-   
+        if (currentRound < roundScore.Length)
+        {
+            if (currentCharge < minChargeNeed) 
+            { 
+                Debug.Log("To Fast!");
+                roundScore[currentRound] = Mathf.Abs(currentCharge - minChargeNeed);
+            }
+            if (currentCharge >= minChargeNeed && currentCharge <= maxChargeNeed) 
+            { 
+                Debug.Log("Just right!"); 
+                roundScore[currentRound] = 0f;
+            }
+            if (currentCharge > maxChargeNeed) 
+            { 
+                Debug.Log("To Slow");
+                roundScore[currentRound] = Mathf.Abs(currentCharge - maxChargeNeed);
+            }
+        }
+
+    }
 
     private void DisplayCurrentChargeRate()
     {
-        if (!isMaxedOut) { currentChargeRate = (chargeRate * currentCharge) * Time.deltaTime; }
-        if (isMaxedOut) { currentChargeRate = (chargeRate * (maxCharge - currentCharge)) * Time.deltaTime; }
+        if  (!isMaxedOut)    { currentChargeRate = (chargeRate * currentCharge) * Time.deltaTime; }
+        if  (isMaxedOut)     { currentChargeRate = (chargeRate * (maxCharge - currentCharge)) * Time.deltaTime; }
     }
 
     private void Charging()
     {
-        if (!isMaxedOut) { currentCharge += (chargeRate + (currentCharge * 2)) * Time.deltaTime; }
-        if (isMaxedOut) { currentCharge -= (chargeRate + (currentCharge * 2)) * Time.deltaTime; }
+        if  (!isMaxedOut)    { currentCharge += (chargeRate + (currentCharge * 2)) * Time.deltaTime; }
+        if  (isMaxedOut)     { currentCharge -= (chargeRate + (currentCharge * 2)) * Time.deltaTime; }
+    }
+
+    private float CalculateScore()
+    {
+        float totalScore = 0f;
+        foreach (float score in roundScore)
+        {
+            totalScore += score;
+        }
+
+        float finalScore = Mathf.Clamp(100f - totalScore, 0f, 100f);
+
+        Debug.Log("Final Score: " + finalScore);
+
+        return finalScore;
     }
 
     private void HandleUI(bool isMinigameActive)
@@ -127,7 +177,7 @@ public class QuenchingGame : MonoBehaviour
             chargeNeedBar.rectTransform.anchoredPosition = new Vector2(
                 0f,
                 minRatio * 1000f
-                );
+            );
         }
         else if (!isMinigameActive)
         {
