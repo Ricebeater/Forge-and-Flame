@@ -9,25 +9,28 @@ public class ForgingGame : MonoBehaviour
     [SerializeField] private RectTransform spawnArea;
     [SerializeField] private float spawnInterval = 2f;
     [SerializeField] private float shrinkingSpeed = 1f;
+    [SerializeField] private int totalNodes = 5;
+    private int spawnedNodes = 0;
 
     [Header("UI")]
     [SerializeField] private GameObject gameUI;
     [SerializeField] private TextMeshProUGUI scoreText;
 
-    private bool isMinigameActive = false;
+    public bool isMiniGameActive = false;
     private float spawnTimer = 0f;
     private int score = 0;
 
     private void Start()
     {
         gameUI.SetActive(false);
-        isMinigameActive = false;
+        isMiniGameActive = false;
     }
 
     public void StartMiniGame()
     {
-        isMinigameActive = true;
+        isMiniGameActive = true;
         score = 0;
+        spawnedNodes = 0;
 
         foreach (Transform child in spawnArea)
         {
@@ -37,7 +40,7 @@ public class ForgingGame : MonoBehaviour
 
     public void EndMiniGame()
     {
-        isMinigameActive = false;
+        isMiniGameActive = false;
         foreach (Transform child in spawnArea)
         {
             Destroy(child.gameObject);
@@ -48,12 +51,16 @@ public class ForgingGame : MonoBehaviour
     {
         HandleUI();
 
+        if (spawnedNodes == totalNodes) { return; }
+
         spawnTimer += Time.deltaTime;
 
         if (spawnTimer >= spawnInterval)
         {
             spawnTimer = 0f;
             GameObject newNode = Instantiate(nodePrefab, spawnArea);
+
+            spawnedNodes += 1;
 
             float width = spawnArea.rect.width;
             float height = spawnArea.rect.height;
@@ -66,19 +73,26 @@ public class ForgingGame : MonoBehaviour
 
             NodeTarget script = newNode.GetComponent<NodeTarget>();
             script.SetUp(this);
-        }    
+        }
+        
+
     }
 
     public void ReportHit(bool isSuccess)
     {
         if (isSuccess) score += 100;
-        else score -= 50;
+        else score -= 100;
 
+    }
+
+    public float CalculatedScore()
+    {
+        return score / totalNodes;
     }
 
     private void HandleUI()
     {
-        gameUI.SetActive(isMinigameActive);
+        gameUI.SetActive(isMiniGameActive);
         scoreText.text = "Score: " + score;
     }
 }

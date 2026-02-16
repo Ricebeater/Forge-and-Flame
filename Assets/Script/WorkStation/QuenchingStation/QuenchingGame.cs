@@ -11,8 +11,8 @@ public class QuenchingGame : MonoBehaviour
     [SerializeField] private float chargeRate = 1f;
     [SerializeField] private float minChargeNeed;
     [SerializeField] private float maxChargeNeed;
-    [SerializeField]private bool isMinigameActive = false;
-    [SerializeField]private int roundRequire = 3;
+    [SerializeField] private int roundRequire = 3;
+    public bool isMiniGameActive = false;
     
     //scoring
     private int currentRound = 0;
@@ -43,9 +43,9 @@ public class QuenchingGame : MonoBehaviour
 
     private void Update()
     {
-        HandleUI(isMinigameActive);
+        HandleUI(isMiniGameActive);
         
-        if (!isMinigameActive) { return; }
+        if (!isMiniGameActive) { return; }
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
@@ -75,7 +75,7 @@ public class QuenchingGame : MonoBehaviour
 
              if (currentRound >= roundRequire)
              {
-                 CalculateScore();
+                 CalculatedScore();
                  currentRound = 0;
             }
         }
@@ -86,14 +86,14 @@ public class QuenchingGame : MonoBehaviour
     public void StartMinigame()
     {
         roundScore = new float[roundRequire];
-        isMinigameActive = true;
+        isMiniGameActive = true;
         currentCharge = 0f;
         currentRound = 0;
     }
 
     public void EndMinigame()
     {
-        isMinigameActive = false;
+        isMiniGameActive = false;
         currentCharge = 0f;
         currentRound = 0;
 
@@ -136,7 +136,7 @@ public class QuenchingGame : MonoBehaviour
         if  (isMaxedOut)     { currentCharge -= (chargeRate + (currentCharge * 2)) * Time.deltaTime; }
     }
 
-    private float CalculateScore()
+    public float CalculatedScore()
     {
         float totalScore = 0f;
         foreach (float score in roundScore)

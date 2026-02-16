@@ -13,7 +13,7 @@ public class SmeltingGame : MonoBehaviour
     private bool isMinigameActive = false;
 
     [Header("Debug")]
-    public bool isMiniGameStarted;
+    public bool isMiniGameActive;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI heatText;
@@ -36,13 +36,13 @@ public class SmeltingGame : MonoBehaviour
 
     private void Update()
     {
-        isMiniGameStarted = isMinigameActive;
+        isMiniGameActive = isMinigameActive;
         currentHeat = Mathf.Clamp(currentHeat, 0f, requiredHeat);
         HandleUI();
 
         if (!isMinigameActive) { return; }
 
-        if (currentHeat > 0f && currentHeat < 100) { currentHeat -= heatDecreaseRate * Time.deltaTime; }
+        if (currentHeat > 0f) { currentHeat -= heatDecreaseRate * Time.deltaTime; }
 
         if (Keyboard.current.xKey.wasPressedThisFrame)
         {
@@ -50,6 +50,23 @@ public class SmeltingGame : MonoBehaviour
         }
 
     }
+
+    public float CalculatedScore()
+    {
+        float score;
+        
+        if(currentHeat >= requiredHeat)
+        {
+            score = 100f;
+            return score;
+        }
+
+        score = currentHeat;
+        return score;
+
+
+    }
+
 
     private void HandleUI()
     {
