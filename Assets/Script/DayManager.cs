@@ -1,10 +1,15 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DayManager : MonoBehaviour
 {
     public static DayManager Instance { get; private set; }
 
-    public int currentDay = 1;
+    public int dayNumber = 1;
+    public int customersPerDay = 5;
+
+    public UnityEvent OnDayStart;
+    public UnityEvent OnDayEnd;
 
     private void Awake()
     {
@@ -17,5 +22,19 @@ public class DayManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void StartDay()
+    {
+        Debug.Log($"Day {dayNumber} start");
+        OnDayStart?.Invoke();
+    }
+
+    public void EndDay()
+    {
+        Debug.Log("Day Ended.");
+        OnDayEnd?.Invoke();
+
+        dayNumber++;
     }
 }
