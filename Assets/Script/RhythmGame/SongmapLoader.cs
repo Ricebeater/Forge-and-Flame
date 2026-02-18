@@ -1,16 +1,17 @@
 using System.IO;
+using Unity.Jobs;
 using UnityEngine;
 
 public class SongmapLoader : MonoBehaviour
 {
-    public Conductor conductor;
+    public NoteSpawner noteSpawner;
 
     private void Start()
     {
         LoadLevel("Loyalty.json");
     }
 
-    public void LoadLevel(string filename)
+    private void LoadLevel(string filename)
     {
         string filePath = Path.Combine(Application.streamingAssetsPath, filename);
 
@@ -18,25 +19,25 @@ public class SongmapLoader : MonoBehaviour
         {
             string jsonContent = File.ReadAllText(filePath);
 
-            SongmapData songData = JsonUtility.FromJson<SongmapData>(jsonContent);
+            SongmapData songmapData = JsonUtility.FromJson<SongmapData>(jsonContent);
 
-            Debug.Log($"Loaded Song: {songData.title} by {songData.artist}");
-            InitializeGame(songData);
+            Debug.Log($"Loaded Song: {songmapData.title} by {songmapData.artist}");
+            InitializeGame(songmapData);
         }
         else
         {
             Debug.LogError($"Songmap file not found at: {filePath}");
         }
     }
-    void InitializeGame(SongmapData data)
+    private void InitializeGame(SongmapData data)
     {
-        if (conductor != null)
-        {
-            conductor.songBpm = data.bpm;
-            conductor.firstBeatOffset = data.startOffset;
+        Conductor.instance.songBpm          = data.bpm;
+        Conductor.instance.firstBeatOffset  = data.startOffset;
+        Conductor.instance.init();
 
-            // Pass the notes to your Spawner script (Example)
-            // noteSpawner.SetNotes(data.notes);
+        if(noteSpawner != null)
+        {
+            noteSpawner.SetNotes(data.notes);
         }
     }
 }

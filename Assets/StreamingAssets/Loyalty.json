@@ -2,10 +2,10 @@
     "title": "Loyalty",
     "artist": "KGLW",
     "bpm": 167,
-    "startOffsset": 0,
-    "nodes" : [
-        {"timeInBeats" : 4.0, "x" : -0.5, "y" : 0.0},
-        {"timeInBeats" : 4.5, "x" : 0.0, "y" : 0.0},
-        {"timeInBeats" : 5.0, "x" : 0.5, "y" : 0.0}
+    "startOffset": 0,
+    "notes" : [
+        {"timeInBeats" : 0.0, "x" : 0.0, "y" : 0.0},
+        {"timeInBeats" : 45.5, "x" : 0.5, "y" : 0.0},
+        {"timeInBeats" : 50.0, "x" : 1.0, "y" : 0.0}
     ]
 }
