@@ -31,9 +31,9 @@ public class SongmapLoader : MonoBehaviour
     }
     private void InitializeGame(SongmapData data)
     {
-        Conductor.instance.songBpm          = data.bpm;
-        Conductor.instance.firstBeatOffset  = data.startOffset;
-        Conductor.instance.init();
+        Conductor.Instance.songBpm          = data.bpm;
+        Conductor.Instance.firstBeatOffset  = data.startOffset;
+        Conductor.Instance.init();
 
         if(noteSpawner != null)
         {

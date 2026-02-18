@@ -635,9 +635,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NoteSpawner
   notes: []
+  notePrefab: {fileID: 8025601632095026037, guid: 859f21c9367ca294b88d6dec7f48becf, type: 3}
   nextNoteIndex: 0
   spawnAheadBeats: 2
-  notePrefab: {fileID: 8025601632095026037, guid: 859f21c9367ca294b88d6dec7f48becf, type: 3}
+  hitLineY: -4
   canvas: {fileID: 1166899666}
 --- !u!1 &2049552116
 GameObject:

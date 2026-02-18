@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Conductor : MonoBehaviour
 {
-    public static Conductor instance { get; private set; }
+    public static Conductor Instance { get; private set; }
 
     [Header("Info")]
     public float songBpm;
@@ -21,9 +21,9 @@ public class Conductor : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if(Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
