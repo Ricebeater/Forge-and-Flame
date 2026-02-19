@@ -15,8 +15,7 @@ public class SongmapData
 public class NoteData
 {
     public float timeInBeats;
-    public float x;
-    public float y;
+    public int lane;
     public int type;
 }
 

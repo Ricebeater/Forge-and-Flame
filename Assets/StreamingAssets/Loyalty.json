@@ -4,8 +4,10 @@
     "bpm": 167,
     "startOffset": 0,
     "notes" : [
-        {"timeInBeats" : 10.0, "x" : 0.5, "y" : 0.0},
-        {"timeInBeats" : 45.5, "x" : 0.5, "y" : 0.0},
-        {"timeInBeats" : 50.0, "x" : 1.0, "y" : 0.0}
+        {"timeInBeats" : 10.0, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 15.5, "lane" : 1, "type" : 0},
+        {"timeInBeats" : 25.5, "lane" : 2, "type" : 0},
+        {"timeInBeats" : 45.5, "lane" : 1, "type" : 0},
+        {"timeInBeats" : 50.0, "lane" : 2, "type" : 0}
     ]
 }

@@ -3,13 +3,17 @@ using System.Collections.Generic;
 
 public class NoteSpawner : MonoBehaviour
 {
-    public List<NoteData> notes = new List<NoteData>();
+    
     public GameObject notePrefab;
-    public int nextNoteIndex = 0;
+    public Transform canvas;
+
+    public Transform[] lanePositions;
+
     public float spawnAheadBeats = 2f;
     public float hitLineY = -4f;
-
-    public Transform canvas;
+    
+    private List<NoteData> notes = new List<NoteData>();
+    private int nextNoteIndex = 0;
 
     public void SetNotes(List<NoteData> noteList)
     {
@@ -41,11 +45,18 @@ public class NoteSpawner : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = new Vector3(data.x, data.y, 0);
+        if (data.lane < 0 || data.lane >= lanePositions.Length)
+        {
+            Debug.LogWarning($"NoteSpawner: note has invalid lane index {data.lane}. Check your JSON and lanePositions array.");
+            return;
+        }
 
-        GameObject noteObj = Instantiate(notePrefab, spawnPos, Quaternion.identity, canvas);
+        Vector3 spawnPos = lanePositions[data.lane].position;
         
+        GameObject noteObj = Instantiate(notePrefab, spawnPos, Quaternion.identity, canvas);
+
         NoteController ctrl = noteObj.GetComponent<NoteController>();
-        ctrl.Init(data, spawnAheadBeats, hitLineY);
+
+        ctrl.Init(data, spawnAheadBeats, hitLineY, spawnPos);
     }
 }

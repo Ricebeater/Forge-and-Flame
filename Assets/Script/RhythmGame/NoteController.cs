@@ -1,37 +1,133 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NoteController : MonoBehaviour
 {
+    public int lane { get; private set; }
+    public float targetBeat { get; private set; }
+
     private NoteData noteData;
     private float spawnAheadBeats;
     private float hitLineY;
 
     private float spawnY;
     private float spawnBeat;
+    private float laneX;
 
-    public void Init(NoteData data, float aheadBeats, float hitY)
+    private bool isHit = false;
+    private bool isMissed = false;
+
+    private SpriteRenderer spriteRenderer;
+    private Image spriteImage;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteImage = GetComponent<Image>();
+    }
+
+    public void Init(NoteData data, float aheadBeats, float hitY, Vector3 spawnPosition)
     {
         noteData        = data;
         spawnAheadBeats = aheadBeats;
         hitLineY        = hitY;
 
-        spawnY = transform.position.y + (Screen.width / 2);
-        spawnBeat = Conductor.Instance.songPositionInBeats;
+        lane            = data.lane;
+        targetBeat      = data.timeInBeats;
+
+        laneX           = spawnPosition.x;
+        spawnY          = spawnPosition.y;
+        spawnBeat = Conductor.Instance.songPositionInBeats; 
+
+        HitManager.Instance.RegisterNote(this);
     }
 
     private void Update()
     {
         float currentBeat = Conductor.Instance.songPositionInBeats;
-
+     
         float t = (currentBeat - spawnBeat) / spawnAheadBeats;
-        t = Mathf.Clamp01(t);
+        float newY = Mathf.Lerp(spawnY, hitLineY, Mathf.Clamp01(t));
+        transform.position = new Vector3(laneX, newY, 0f);
 
-        float newY = Mathf.Lerp(spawnY, hitLineY, t);
-        transform.position = new Vector3(noteData.x * 1920f, newY, 0f);
+        Vector3 pos = transform.position;
+        
+        pos.y = newY;
+        transform.position = pos;
 
         if (currentBeat > noteData.timeInBeats + 0.5f)
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Hit(Judgement judgement)
+    {
+        if (isHit) { return; }
+        isHit = true;
+
+        HitManager.Instance.UnregisterNote(this);
+
+        switch (judgement)
+        {
+            case Judgement.Perfect:
+                StartCoroutine(HitAnimation());
+                spriteRenderer.color = Color.green;
+                spriteImage.color = Color.green;
+                break;
+            case Judgement.Great:
+                StartCoroutine(HitAnimation());
+                spriteRenderer.color = Color.greenYellow;
+                spriteImage.color = Color.greenYellow;
+                break;
+            case Judgement.Nice:
+                StartCoroutine(HitAnimation());
+                spriteRenderer.color = Color.yellow;
+                spriteImage.color = Color.yellow;
+                break;
+            case Judgement.Miss:
+                OnMiss();
+                break;
+        }
+    }
+
+    public void OnMiss()
+    {
+        SetColor(new Color(1f, 0.3f, 0.3f, 0.5f));
+    }
+
+    private void SetColor(Color color)
+    {
+        if(spriteRenderer != null)
+        {
+            spriteRenderer.color = color;
+        }
+        if(spriteImage != null)
+        {
+            spriteImage.color = color;
+        }
+    }
+
+    private IEnumerator HitAnimation()
+    {
+        float duration = 0.12f;
+        float elapsed = 0f;
+        Vector3 origin = transform.localScale;
+        Vector3 target = origin * 1.6f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(origin, target, elapsed / duration);
+            yield return null;
+        }
+
+        DestroyNote();
+    }
+
+    private void DestroyNote()
+    {
+        Destroy(gameObject);
     }
 }
