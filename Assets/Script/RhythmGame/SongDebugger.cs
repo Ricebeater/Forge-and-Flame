@@ -52,8 +52,15 @@ public class SongDebugger : MonoBehaviour
             SetVisible(!isVisible);
         }
 
-        if(!isVisible) { return; }
+        
 
+        if(!isVisible) { return; }
+        
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Debug.Log($"Current Song Position: {Conductor.Instance.songPosition:F2}s, Beat: {Conductor.Instance.songPositionInBeats:F2}");
+        }
+        
         if (!isScrubbing && songSlider != null) 
         { 
             songSlider.SetValueWithoutNotify(Conductor.Instance.songPosition);

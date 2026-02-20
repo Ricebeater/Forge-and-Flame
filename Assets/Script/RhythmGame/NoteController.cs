@@ -36,7 +36,7 @@ public class NoteController : MonoBehaviour
 
         laneX           = spawnPosition.x;
         spawnY          = spawnPosition.y;
-        spawnBeat = Conductor.Instance.songPositionInBeats; 
+        spawnBeat       = Conductor.Instance.songPositionInBeats; 
 
         HitManager.Instance.RegisterNote(this);
     }

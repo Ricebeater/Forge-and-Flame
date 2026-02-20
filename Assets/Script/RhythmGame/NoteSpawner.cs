@@ -10,10 +10,11 @@ public class NoteSpawner : MonoBehaviour
     public Transform[] lanePositions;
 
     public float spawnAheadBeats = 2f;
-    public float hitLineY = -4f;
     
     private List<NoteData> notes = new List<NoteData>();
     private int nextNoteIndex = 0;
+
+    [SerializeField] private Transform hitLine;
 
     public void SetNotes(List<NoteData> noteList)
     {
@@ -50,6 +51,8 @@ public class NoteSpawner : MonoBehaviour
             Debug.LogWarning($"NoteSpawner: note has invalid lane index {data.lane}. Check your JSON and lanePositions array.");
             return;
         }
+
+        float hitLineY = hitLine.position.y + -10;
 
         Vector3 spawnPos = lanePositions[data.lane].position;
         
