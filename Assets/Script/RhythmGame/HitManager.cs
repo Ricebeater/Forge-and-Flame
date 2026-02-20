@@ -61,7 +61,7 @@ public class HitManager : MonoBehaviour
             if(note.lane != lane) continue;
 
             float delta = Mathf.Abs(note.targetBeat - currentBeat);
-            if (delta > bestDelta)
+            if (delta < bestDelta)
             { 
                 bestDelta = delta;
                 closestNote = note;

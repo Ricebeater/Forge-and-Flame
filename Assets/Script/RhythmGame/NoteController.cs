@@ -18,12 +18,10 @@ public class NoteController : MonoBehaviour
     private bool isHit = false;
     private bool isMissed = false;
 
-    private SpriteRenderer spriteRenderer;
     private Image spriteImage;
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
         spriteImage = GetComponent<Image>();
     }
 
@@ -45,20 +43,24 @@ public class NoteController : MonoBehaviour
 
     private void Update()
     {
+        if (isHit) { return; }
+
         float currentBeat = Conductor.Instance.songPositionInBeats;
      
         float t = (currentBeat - spawnBeat) / spawnAheadBeats;
         float newY = Mathf.Lerp(spawnY, hitLineY, Mathf.Clamp01(t));
         transform.position = new Vector3(laneX, newY, 0f);
 
-        Vector3 pos = transform.position;
-        
-        pos.y = newY;
-        transform.position = pos;
 
-        if (currentBeat > noteData.timeInBeats + 0.5f)
+        if(!isMissed && currentBeat > targetBeat + 0.22f)
         {
-            Destroy(gameObject);
+            isMissed = true;
+            OnMiss();
+        }
+
+        if (currentBeat > targetBeat + 0.5f)
+        {
+            DestroyNote();
         }
     }
 
@@ -72,19 +74,16 @@ public class NoteController : MonoBehaviour
         switch (judgement)
         {
             case Judgement.Perfect:
-                StartCoroutine(HitAnimation());
-                spriteRenderer.color = Color.green;
                 spriteImage.color = Color.green;
+                StartCoroutine(HitAnimation());
                 break;
             case Judgement.Great:
-                StartCoroutine(HitAnimation());
-                spriteRenderer.color = Color.greenYellow;
                 spriteImage.color = Color.greenYellow;
+                StartCoroutine(HitAnimation());
                 break;
             case Judgement.Nice:
-                StartCoroutine(HitAnimation());
-                spriteRenderer.color = Color.yellow;
                 spriteImage.color = Color.yellow;
+                StartCoroutine(HitAnimation());
                 break;
             case Judgement.Miss:
                 OnMiss();
@@ -95,14 +94,11 @@ public class NoteController : MonoBehaviour
     public void OnMiss()
     {
         SetColor(new Color(1f, 0.3f, 0.3f, 0.5f));
+        StartCoroutine(HitAnimation());
     }
 
     private void SetColor(Color color)
     {
-        if(spriteRenderer != null)
-        {
-            spriteRenderer.color = color;
-        }
         if(spriteImage != null)
         {
             spriteImage.color = color;

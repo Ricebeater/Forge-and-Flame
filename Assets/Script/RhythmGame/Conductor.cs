@@ -16,9 +16,10 @@ public class Conductor : MonoBehaviour
 
     [Header("Setting")]
     public float firstBeatOffset = 0;
-
     public static float inputOffset = 0f;
 
+    [SerializeField, Range(0.25f,2f)] private float playbackSpeed;
+    
     private void Awake()
     {
         if(Instance == null)
@@ -36,14 +37,12 @@ public class Conductor : MonoBehaviour
         dspSongTime = (float)AudioSettings.dspTime;
     }
 
-
-    [SerializeField, Range(0,4)] private float pitchChange;
     private void Update()
     {
         songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
-        songPositionInBeats = songPosition / secPerBeat;
+        songPositionInBeats = secPerBeat > 0 ? songPosition / secPerBeat : 0f;
 
-        musicSource.pitch = pitchChange;
+        musicSource.pitch = playbackSpeed;
     }
 
     public void init()
@@ -57,4 +56,32 @@ public class Conductor : MonoBehaviour
     {
         return songPosition + inputOffset;
     }
+
+    #region Debug controls
+
+    [SerializeField]private bool isSeeking;
+
+    public void SeekPreview(float timeInSeconds)
+    {
+        isSeeking = true;
+        musicSource.time = Mathf.Clamp(timeInSeconds, 0f, musicSource.clip.length);
+    }
+
+    public void CommitSeek(float timeInSeconds)
+    {
+        timeInSeconds = Mathf.Clamp(timeInSeconds, 0f, musicSource.clip.length);
+        musicSource.time = timeInSeconds;
+        dspSongTime = (float)AudioSettings.dspTime - timeInSeconds - firstBeatOffset;
+        isSeeking = false;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        playbackSpeed = Mathf.Clamp(speed, 0.25f, 2f);
+        musicSource.pitch = playbackSpeed;
+
+        secPerBeat = (60f / songBpm) / playbackSpeed;
+    }
+
+    #endregion
 }

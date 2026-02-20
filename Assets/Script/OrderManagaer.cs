@@ -19,6 +19,7 @@ public class OrderManagaer : MonoBehaviour
     private void Start()
     {
         GenerateNewOrder();
+        if (hasActiveOrder) { Debug.Log(""); }
     }
 
     public void GenerateNewOrder()

@@ -8,7 +8,6 @@ public class ForgingGame : MonoBehaviour
     [SerializeField] private GameObject nodePrefab;
     [SerializeField] private RectTransform spawnArea;
     [SerializeField] private float spawnInterval = 2f;
-    [SerializeField] private float shrinkingSpeed = 1f;
     [SerializeField] private int totalNodes = 5;
     private int spawnedNodes = 0;
 
