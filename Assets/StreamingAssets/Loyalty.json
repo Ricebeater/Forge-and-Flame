@@ -1,18 +1,20 @@
 {
     "title": "Loyalty",
     "artist": "KGLW",
-    "bpm": 167,
+    "bpm": 90,
     "startOffset": 0,
     "notes" : [
-        {"timeInBeats" : 10.63, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 11.28, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 11.99, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 12.65, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 13.30, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 14.10, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 14.84, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 15.56, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 16.33, "lane" : 0, "type" : 0},
-        {"timeInBeats" : 17.04, "lane" : 0, "type" : 0}
+        {"timeInBeats" : 10.00, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 10.50, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 11.00, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 11.50, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 12.00, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 12.50, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 13.00, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 13.50, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 14.00, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 14.50, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 15.00, "lane" : 0, "type" : 0},
+        {"timeInBeats" : 15.50, "lane" : 0, "type" : 0}
     ]
 }

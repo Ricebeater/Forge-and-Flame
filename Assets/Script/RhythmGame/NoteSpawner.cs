@@ -5,7 +5,7 @@ public class NoteSpawner : MonoBehaviour
 {
     
     public GameObject notePrefab;
-    public Transform canvas;
+    public Transform spawnCanvas;
 
     public Transform[] lanePositions;
 
@@ -52,11 +52,11 @@ public class NoteSpawner : MonoBehaviour
             return;
         }
 
-        float hitLineY = hitLine.position.y + -10;
+        float hitLineY = hitLine.position.y;
 
         Vector3 spawnPos = lanePositions[data.lane].position;
         
-        GameObject noteObj = Instantiate(notePrefab, spawnPos, Quaternion.identity, canvas);
+        GameObject noteObj = Instantiate(notePrefab, spawnPos, Quaternion.identity, spawnCanvas);
 
         NoteController ctrl = noteObj.GetComponent<NoteController>();
 
