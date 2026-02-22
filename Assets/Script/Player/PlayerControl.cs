@@ -122,12 +122,10 @@ public class PlayerControl : MonoBehaviour
     {
         isWorkingAtStation = false;
         rb.isKinematic = false;
-        //DisableMouseCursor();
     }
 
     public void AlignToStation(Transform target, float duration)
     {
-        //EnableMouseCursor();
         StartCoroutine(AlignToStationRoutine(target, duration));
     }
 
@@ -141,7 +139,8 @@ public class PlayerControl : MonoBehaviour
         rb.isKinematic = true;
 
         Vector3 startPos = transform.position;
-        
+        Vector3 noYTargetPos = new Vector3(target.position.x, startPos.y, target.position.z);
+
         float startX = xRotation;
         float startY = yRotation;
 
@@ -154,9 +153,9 @@ public class PlayerControl : MonoBehaviour
         while (timeElapsed < duration)
         {
             float t = timeElapsed / duration;
-            t = t * t * (3f - 2f * t); // this is call "smoothstep" it looks cool you should go and research it bro
+            t = t * t * (3f - 2f * t); // this is call "smoothstep" cool equation you should go and research it bro
 
-            transform.position = Vector3.Lerp(startPos, target.position, t);
+            transform.position = Vector3.Lerp(startPos, noYTargetPos, t);
 
             xRotation = Mathf.LerpAngle(startX, targetX, t);
             yRotation = Mathf.LerpAngle(startY, targetY, t);
@@ -168,7 +167,7 @@ public class PlayerControl : MonoBehaviour
             yield return null;
         }
 
-        transform.position = target.position;
+        transform.position = noYTargetPos;
 
         //cam
         xRotation = targetX;

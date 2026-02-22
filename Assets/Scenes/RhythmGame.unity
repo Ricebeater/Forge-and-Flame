@@ -504,6 +504,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 329563184}
     - target: {fileID: 2033830127262566139, guid: 02ef950bf4ffeac4cb41527aefb393b4, type: 3}
+      propertyPath: spawnCanvas
+      value: 
+      objectReference: {fileID: 1166899666}
+    - target: {fileID: 2033830127262566139, guid: 02ef950bf4ffeac4cb41527aefb393b4, type: 3}
+      propertyPath: spawnAheadBeats
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2033830127262566139, guid: 02ef950bf4ffeac4cb41527aefb393b4, type: 3}
       propertyPath: 'lanePositions.Array.data[0]'
       value: 
       objectReference: {fileID: 1503362323}

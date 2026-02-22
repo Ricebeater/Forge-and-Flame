@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class StationBase : BaseInteractable
@@ -5,6 +6,15 @@ public class StationBase : BaseInteractable
     [SerializeField] private Transform playerStayPosition;
     [SerializeField] private float trasitionDuration = 0.4f;
 
+    [SerializeField] private GameObject interactPrompt;
+
+    private void Update()
+    {
+        if (interactPrompt != null)
+        {
+            interactPrompt.SetActive(isHover);
+        }
+    }
     public override void Interact(PlayerInteractor player)
     {
         Debug.Log("Interacted with " + gameObject.name + " Station");

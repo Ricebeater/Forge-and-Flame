@@ -6,6 +6,8 @@ public abstract class BaseInteractable : MonoBehaviour, IInteractable
     [SerializeField] private Color originalColor;
     private Renderer objectRenderer;
 
+    public bool isHover;
+
     private void Start()
     {
         objectRenderer = GetComponent<Renderer>();
@@ -20,16 +22,24 @@ public abstract class BaseInteractable : MonoBehaviour, IInteractable
 
     public void OnHoverEnter()
     {
-        if(objectRenderer != null)
+        if (objectRenderer != null)
+        {
             objectRenderer.material.color = highlightColor;
-        Debug.Log("Hovering over " + gameObject.name);
+            Debug.Log("Hovering over " + gameObject.name);
+            
+            isHover = true;
+        }
     }
 
     public void OnHoverExit()
     {
-        if(objectRenderer != null)
+        if (objectRenderer != null)
+        {
             objectRenderer.material.color = originalColor;
-        Debug.Log("Stopped hovering over " + gameObject.name);
+            Debug.Log("Stopped hovering over " + gameObject.name);
+            
+            isHover = false;
+        }
     }
 
 }
