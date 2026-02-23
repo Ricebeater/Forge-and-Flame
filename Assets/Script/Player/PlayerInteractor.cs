@@ -99,26 +99,5 @@ public class PlayerInteractor : MonoBehaviour
         Gizmos.DrawRay(orientation.transform.position, orientation.transform.forward * interactRange);
     }
 
-    #region Sword Inventory
-
-    public SwordItem currentHeldItem;
-    [SerializeField] private Transform holdPosition;
-
-    public void PickUpSword(SwordItem sword)
-    {
-        currentHeldItem = sword;
-        sword.transform.SetParent(holdPosition);
-        sword.transform.localPosition = Vector3.zero;
-    }
-
-    public void RemoveSword()
-    {
-        if(currentHeldItem != null)
-        {
-            Destroy(currentHeldItem.gameObject);
-            currentHeldItem = null;
-        }
-    }
-
-    #endregion
+    
 }

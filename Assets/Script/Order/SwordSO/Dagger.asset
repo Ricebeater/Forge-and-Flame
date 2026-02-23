@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SwordDataSO
   swordType: 3
   swordName: Dagger
-  icon: {fileID: 21300000, guid: 2bdb811322f1b6c4bbff8a43b5ace4a6, type: 3}
+  icon: {fileID: 21300000, guid: 2d70dff6a5ad77a4190f99f21414bf8c, type: 3}
   prefab: {fileID: 8768066362805201874, guid: af70a9b8016961749bd5c846ec971843, type: 3}

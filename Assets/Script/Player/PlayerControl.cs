@@ -18,7 +18,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] private Camera playerCamera;
 
-    [SerializeField] private bool isWorkingAtStation;
+    public bool isWorkingAtStation;
     [HideInInspector] public bool _isWorkingAtStation => isWorkingAtStation;
 
     private InputAction moveAction;
