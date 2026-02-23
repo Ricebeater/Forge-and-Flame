@@ -93,6 +93,11 @@ public class NoteController : MonoBehaviour
 
     public void OnMiss()
     {
+        if (!isMissed) // protection so it trigger only one time
+        {
+            HitManager.Instance.AddScore(Judgement.Miss);
+        }
+
         SetColor(new Color(1f, 0.3f, 0.3f, 0.5f));
         StartCoroutine(HitAnimation());
     }

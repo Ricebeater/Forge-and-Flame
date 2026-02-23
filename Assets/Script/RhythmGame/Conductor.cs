@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -11,15 +12,19 @@ public class Conductor : MonoBehaviour
     public float songPosition;
     public float songPositionInBeats;
     public float dspSongTime;
+    public float endBeat;
 
     public AudioSource musicSource;
 
     [Header("Setting")]
     public float firstBeatOffset = 0;
     public static float inputOffset = 0f;
+    public float startingVolume = 1.5f;
 
     [SerializeField, Range(0.25f,2f)] private float playbackSpeed;
-    
+
+    private bool isPlaying = false;
+
     private void Awake()
     {
         if(Instance == null)
@@ -39,9 +44,11 @@ public class Conductor : MonoBehaviour
 
     private void Update()
     {
-        songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
-        songPositionInBeats = secPerBeat > 0 ? songPosition / secPerBeat : 0f;
-
+        if (isPlaying)
+        {
+            songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
+            songPositionInBeats = secPerBeat > 0 ? songPosition / secPerBeat : 0f;
+        }
         musicSource.pitch = playbackSpeed;
     }
 
@@ -50,11 +57,45 @@ public class Conductor : MonoBehaviour
         secPerBeat = 60f / songBpm;
         dspSongTime = (float)AudioSettings.dspTime;
         musicSource.Play();
+        musicSource.volume = startingVolume;
+        isPlaying = true;
     }
 
     public float GetAudioTime()
     {
         return songPosition + inputOffset;
+    }
+
+    public void FadeOutMusic(float duration = 1.5f)
+    {
+        StartCoroutine(FadeOutRoutine(duration));
+    }
+
+    private IEnumerator FadeOutRoutine(float duration)
+    {
+        float startVolume = musicSource.volume;
+        float elapse = 0f;
+
+        while (elapse < duration)
+        {
+            elapse += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(startVolume, 0f, elapse / duration);
+            yield return null;
+        }
+
+        musicSource.volume = 0f;
+        musicSource.Stop();
+    }
+
+    public void ResetAudio()
+    {
+        StopAllCoroutines();
+        isPlaying = false;
+        musicSource.Stop();
+        musicSource.volume = startingVolume;
+        musicSource.time = 0f;
+        songPosition = 0f;
+        songPositionInBeats = 0f;
     }
 
     #region Debug controls

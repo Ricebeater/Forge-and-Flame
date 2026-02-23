@@ -13,6 +13,10 @@ public class HitManager : MonoBehaviour
 
     private List<NoteController> activeNotes = new List<NoteController>();
 
+    //scoring
+    private int totalNotes = 0;
+    private float scoreAccumulator = 0f;
+
     private void Awake()
     {
         if(Instance == null)
@@ -36,6 +40,7 @@ public class HitManager : MonoBehaviour
         }
     }
 
+
     public void RegisterNote(NoteController note)
     {
         if(!activeNotes.Contains(note))
@@ -48,6 +53,12 @@ public class HitManager : MonoBehaviour
     {
         activeNotes.Remove(note);
     }
+
+    public void ClearAllNotes()
+    {
+        activeNotes.Clear();
+    }
+
 
     private void TryHitLane(int lane)
     {
@@ -82,6 +93,36 @@ public class HitManager : MonoBehaviour
 
         Debug.Log($"Lane {lane}: {result} (best delta: {bestDelta:F3} beats off)");
         closestNote.Hit(result);
+        AddScore(result);
+    }
+
+    public void AddScore(Judgement judgement)
+    {
+        switch (judgement)
+        {
+            case Judgement.Perfect: scoreAccumulator += 1.00f; break;
+            case Judgement.Great: scoreAccumulator += 0.75f; break;
+            case Judgement.Nice: scoreAccumulator += 0.50f; break;
+            case Judgement.Miss: scoreAccumulator += 0f; break;
+        }
+    }
+    
+    public void SetTotalNotes(int count)
+    {
+        totalNotes = count; 
+        scoreAccumulator = 0f;
+    }
+
+    public void ResetScore()
+    {
+        scoreAccumulator = 0f; 
+        totalNotes = 0;
+    }
+
+    public float CalculatedScore()
+    {
+        if(totalNotes == 0) {  return 0f; }
+        return (scoreAccumulator / totalNotes) * 100f;
     }
 }
 public enum Judgement

@@ -3,6 +3,7 @@
     "artist": "KGLW",
     "bpm":  167,
     "startOffset": 0,
+    "endBeat": 20,
     "notes" : [
         {"timeInBeats" : 10.00, "lane" : 0, "type" : 0},
         {"timeInBeats" : 10.50, "lane" : 0, "type" : 0},

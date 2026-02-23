@@ -7,12 +7,15 @@ public class SmeltingStation : StationBase
 
     public override void Interact(PlayerInteractor player)
     {
-        base.Interact(player);
-
-        if (gameScript != null)
+        if (!OrderManager.Instance.IsCurrentStep(CraftingStep.Smelting))
         {
-            gameScript.StartMinigame();
+            Debug.Log("you shouldn't be smeltin' this!");
+            return;
         }
+
+        base.Interact(player);
+        gameScript?.StartMinigame();
+        
     }
 
     public override void EscapeInteract(PlayerInteractor player)
@@ -21,7 +24,9 @@ public class SmeltingStation : StationBase
 
         if (gameScript != null)
         {
+            float score = gameScript.CalculatedScore();
             gameScript.EndMinigame();
+            OrderManager.Instance.CompleteStep(CraftingStep.Smelting, score);
         }
     }
 

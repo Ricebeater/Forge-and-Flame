@@ -7,21 +7,25 @@ public class QuenchingStation : StationBase
 
     public override void Interact(PlayerInteractor player)
     {
-        base.Interact(player);
-        
-        if (gameScript != null)
+        if(!OrderManager.Instance.IsCurrentStep(CraftingStep.Quenching))
         {
-            gameScript.StartMinigame();
+            Debug.Log("submerge this and you will face my wrath");
+            return;
         }
+
+        base.Interact(player);
+        gameScript?.StartMinigame();
+        
     }
 
     public override void EscapeInteract(PlayerInteractor player)
     {
         base.EscapeInteract(player);
-        
         if (gameScript != null)
         {
+            float score = gameScript.CalculatedScore();
             gameScript.EndMinigame();
+            OrderManager.Instance.CompleteStep(CraftingStep.Quenching, score);
         }
     }
 }

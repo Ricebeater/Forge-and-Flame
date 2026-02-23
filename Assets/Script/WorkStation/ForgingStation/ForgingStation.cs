@@ -7,19 +7,25 @@ public class ForgingStation : StationBase
 
     public override void Interact(PlayerInteractor player)
     {
-        base.Interact(player);
-        if( gameScript != null)
+        if (!OrderManager.Instance.IsCurrentStep(CraftingStep.Forging))
         {
-            gameScript.StartMiniGame();
+            Debug.Log("Do not hammer it!");
+            return;
         }
+        
+        base.Interact(player);
+        gameScript?.StartMiniGame();
     }
 
     public override void EscapeInteract(PlayerInteractor player)
     {
         base.EscapeInteract(player);
+        
         if (gameScript != null)
         {
+            float score = HitManager.Instance.CalculatedScore();
             gameScript.EndMiniGame();
+            OrderManager.Instance.CompleteStep(CraftingStep.Forging, score);
         }
     }
 }

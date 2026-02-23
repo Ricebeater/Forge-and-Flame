@@ -65,12 +65,15 @@ public class SmeltingGame : MonoBehaviour
 
         if (!isMinigameActive) { return; }
 
+        // first click
         if (!timerStarted)
         {
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
+                float firstClickBoost = 30f; // boost the first click, player only need to maintian click rate for good score
+
                 timerStarted = true;
-                currentHeat += heatIncreaseRate;
+                currentHeat += heatIncreaseRate + firstClickBoost;
                 Debug.Log("Smelting timer started!!!");
             }
 

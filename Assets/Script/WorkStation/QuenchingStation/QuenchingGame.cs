@@ -102,6 +102,11 @@ public class QuenchingGame : MonoBehaviour
         currentCharge = 0f;
         currentRound = 0;
 
+        if (scoreText != null)
+        {
+            scoreText.gameObject.SetActive(false);
+        }
+
     }
 
     private void StopCharging()
@@ -151,8 +156,6 @@ public class QuenchingGame : MonoBehaviour
 
         float finalScore = Mathf.Clamp(100f - totalScore, 0f, 100f);
 
-        Debug.Log("Final Score: " + finalScore);
-
         return finalScore;
     }
 
@@ -192,10 +195,10 @@ public class QuenchingGame : MonoBehaviour
             chargeBar.enabled = false;
         }
 
-        if (scoreText != null)
+        if (scoreText != null && isMiniGameFinnised)
         {
             scoreText.text = "Score: " + CalculatedScore().ToString("F1");
-            scoreText.gameObject.SetActive(isMiniGameFinnised);
+            scoreText.gameObject.SetActive(true);
         }
 
     }

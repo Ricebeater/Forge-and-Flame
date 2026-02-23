@@ -8,6 +8,7 @@ public class SongmapData
     public string artist;
     public float bpm;
     public float startOffset;
+    public float endBeat;
     public List<NoteData> notes;
 }
 

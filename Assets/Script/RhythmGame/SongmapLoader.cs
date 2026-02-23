@@ -35,12 +35,15 @@ public class SongmapLoader : MonoBehaviour
     {
         Conductor.Instance.songBpm          = data.bpm;
         Conductor.Instance.firstBeatOffset  = data.startOffset;
+        Conductor.Instance.endBeat          = data.endBeat;
         Conductor.Instance.init();
 
         if(noteSpawner != null)
         {
             noteSpawner.SetNotes(data.notes);
         }
+
+        HitManager.Instance.SetTotalNotes(data.notes.Count);
     }
 
 }
