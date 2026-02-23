@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Elf
   m_EditorClassIdentifier: Assembly-CSharp::NPCDataSO
   npcName: Elfine
-  portrait: {fileID: 21300000, guid: 2bdb811322f1b6c4bbff8a43b5ace4a6, type: 3}
-  orderDialogue: YO gimme your best dagger
-  waitingDialogue: ahhhhhhh im bored
-  deliveryDialogue: Finally! stabby time!
+  portrait: {fileID: 21300000, guid: 96541bae5dab97947a3f03c69a8824a3, type: 3}
+  orderDialogue: Make me ye best dagger... please.
+  waitingDialogue: ... back to work.
+  deliveryDialogue: Hmm... Great
   swordOrder: {fileID: 11400000, guid: a1f4c07e3c5605e4086dd14e093a9d69, type: 2}

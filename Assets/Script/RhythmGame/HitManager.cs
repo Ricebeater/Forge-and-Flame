@@ -100,10 +100,10 @@ public class HitManager : MonoBehaviour
     {
         switch (judgement)
         {
-            case Judgement.Perfect: scoreAccumulator += 1.00f; break;
-            case Judgement.Great: scoreAccumulator += 0.75f; break;
-            case Judgement.Nice: scoreAccumulator += 0.50f; break;
-            case Judgement.Miss: scoreAccumulator += 0f; break;
+            case Judgement.Perfect: scoreAccumulator    += 1.00f; break;
+            case Judgement.Great: scoreAccumulator      += 0.80f; break;
+            case Judgement.Nice: scoreAccumulator       += 0.70f; break;
+            case Judgement.Miss: scoreAccumulator       += 0f; break;
         }
     }
     

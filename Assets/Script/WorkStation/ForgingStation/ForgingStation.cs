@@ -4,10 +4,11 @@ using System.Collections;
 public class ForgingStation : StationBase
 {
     [SerializeField] private RhythmForgingGame gameScript;
+    [SerializeField] private bool bypassOrder = false;
 
     public override void Interact(PlayerInteractor player)
     {
-        if (!OrderManager.Instance.IsCurrentStep(CraftingStep.Forging))
+        if (!OrderManager.Instance.IsCurrentStep(CraftingStep.Forging) && !bypassOrder)
         {
             Debug.Log("Do not hammer it!");
             return;

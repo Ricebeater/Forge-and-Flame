@@ -8,7 +8,7 @@ public class SongmapLoader : MonoBehaviour
 
     public void StartGame()
     {
-        LoadLevel("Loyalty.json");
+        LoadLevel("Blue-Danube.json");
         Debug.Log("Game Started with Songmap!");
     }
 

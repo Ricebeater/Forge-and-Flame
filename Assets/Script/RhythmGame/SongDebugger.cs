@@ -1,3 +1,6 @@
+
+using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,6 +24,16 @@ public class SongDebugger : MonoBehaviour
     private float currentSpeed = 1f;
     private bool isScrubbing = false;
     private bool isVisible = false;
+
+    [Header("Recording")]
+    public KeyCode laneKey0 = KeyCode.A;
+    public KeyCode laneKey1 = KeyCode.S;
+    public KeyCode laneKey2 = KeyCode.D;
+    public KeyCode exportKey = KeyCode.Return;
+    public string exportTitle = "Recored Song";
+    public string exportArtist = "rec";
+
+    private List<NoteData> recordedNotes = new List<NoteData>();
 
     private void Start()
     {
@@ -52,21 +65,65 @@ public class SongDebugger : MonoBehaviour
             SetVisible(!isVisible);
         }
 
-        
-
         if(!isVisible) { return; }
         
         if (Input.GetKeyDown(KeyCode.X))
         {
             Debug.Log($"Current Song Position: {Conductor.Instance.songPosition:F2}s, Beat: {Conductor.Instance.songPositionInBeats:F2}");
         }
-        
+
+        TryRecordLane(laneKey0, 0);
+        TryRecordLane(laneKey1, 1);
+        TryRecordLane(laneKey2, 2);
+
+        if (Input.GetKeyDown(exportKey))
+        {
+            ExportToJson();
+        }
+
         if (!isScrubbing && songSlider != null) 
         { 
             songSlider.SetValueWithoutNotify(Conductor.Instance.songPosition);
         }
 
         UpdateUI();
+    }
+
+    private void TryRecordLane(KeyCode key, int lane)
+    {
+        if (Input.GetKeyDown(key))
+        {
+            float beat = Mathf.Round(Conductor.Instance.songPositionInBeats * 100f) / 100f; //round for 2 decimal
+
+            recordedNotes.Add(new NoteData { timeInBeats = beat, lane = lane, type = 0 });
+            Debug.Log($"Recorded note — Lane: {lane}, Beat: {beat:F2}");
+        }
+    }
+
+    private void ExportToJson()
+    {
+        recordedNotes.Sort((a, b) => a.timeInBeats.CompareTo(b.timeInBeats));
+
+        float bpm = Conductor.Instance.songBpm;
+        float endBeat = recordedNotes[recordedNotes.Count - 1].timeInBeats + 2f;
+
+        SongmapData data = new SongmapData
+        {
+            title = exportTitle,
+            artist = exportArtist,
+            bpm = bpm,
+            startOffset = Conductor.Instance.firstBeatOffset,
+            endBeat = endBeat,
+            notes = recordedNotes
+        };
+
+        string json = JsonUtility.ToJson(data, true);
+        string path = Path.Combine(Application.streamingAssetsPath, exportTitle + ".json");
+
+        File.WriteAllText(path, json);
+        Debug.Log($"Exported {recordedNotes.Count} notes to: {path}");
+
+        recordedNotes.Clear();
     }
 
     #region Slider
