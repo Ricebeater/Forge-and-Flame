@@ -196,6 +196,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &3513454887497106551
 BoxCollider:
@@ -256,8 +257,8 @@ MonoBehaviour:
   isHover: 0
   playerStayPosition: {fileID: 8059793147263255768}
   trasitionDuration: 0.4
-  gameScript: {fileID: 118014399483704742}
   interactPrompt: {fileID: 7139755311786127970}
+  gameScript: {fileID: 118014399483704742}
 --- !u!114 &118014399483704742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,8 +275,11 @@ MonoBehaviour:
   currentHeat: 0
   heatIncreaseRate: 10
   heatDecreaseRate: 30
+  smeltDuration: 6
   isMiniGameActive: 0
   heatText: {fileID: 434970929815746761}
+  timerText: {fileID: 0}
+  ScoreText: {fileID: 0}
   HeatBar: {fileID: 8865663641298306910}
   smeltingUI: {fileID: 6797406204137865925}
 --- !u!1 &1198683261816759319
@@ -306,8 +310,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8653261627416168977}
   - {fileID: 5104223546830728136}
+  - {fileID: 8653261627416168977}
   m_Father: {fileID: 5745603152329940500}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -513,6 +517,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &3310566830634713022
 BoxCollider:
@@ -715,6 +720,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -851,6 +857,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

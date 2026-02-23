@@ -13,6 +13,7 @@ public class QuenchingGame : MonoBehaviour
     [SerializeField] private float maxChargeNeed;
     [SerializeField] private int roundRequire = 3;
     public bool isMiniGameActive = false;
+    private bool isMiniGameFinnised = false;
     
     //scoring
     private int currentRound = 0;
@@ -26,6 +27,7 @@ public class QuenchingGame : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI chargeText;
+    [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Image chargeBar;
     [SerializeField] private GameObject miniGameUI;
     [SerializeField] private Image chargeNeedBar;
@@ -75,8 +77,9 @@ public class QuenchingGame : MonoBehaviour
 
              if (currentRound >= roundRequire)
              {
-                 CalculatedScore();
-                 currentRound = 0;
+                isMiniGameFinnised = true;
+                CalculatedScore();
+                currentRound = 0;
             }
         }
 
@@ -87,12 +90,14 @@ public class QuenchingGame : MonoBehaviour
     {
         roundScore = new float[roundRequire];
         isMiniGameActive = true;
+        isMiniGameFinnised = false;
         currentCharge = 0f;
         currentRound = 0;
     }
 
     public void EndMinigame()
     {
+        isMiniGameFinnised= false;
         isMiniGameActive = false;
         currentCharge = 0f;
         currentRound = 0;
@@ -178,6 +183,7 @@ public class QuenchingGame : MonoBehaviour
                 0f,
                 minRatio * 1000f
             );
+
         }
         else if (!isMinigameActive)
         {
@@ -185,6 +191,13 @@ public class QuenchingGame : MonoBehaviour
             chargeText.enabled = false;
             chargeBar.enabled = false;
         }
+
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + CalculatedScore().ToString("F1");
+            scoreText.gameObject.SetActive(isMiniGameFinnised);
+        }
+
     }
 
 }

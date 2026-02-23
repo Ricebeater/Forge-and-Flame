@@ -11,12 +11,25 @@ public class SmeltingGame : MonoBehaviour
     [SerializeField] private float heatIncreaseRate = 10f;
     [SerializeField] private float heatDecreaseRate = 1f;
     private bool isMinigameActive = false;
+    private bool isMinigameFinnished = false;
+
+    [Header("Timer")]
+    [SerializeField] private float smeltDuration = 6f;
+    private float smeltTimer = 0f;
+    private bool timerStarted = false;
+
+    //Calculate Avarage Heat
+    private float heatAccumulator = 0f;
+    private int heatSampleCount = 0;
+    private float averageHeat = 0f;
 
     [Header("Debug")]
     public bool isMiniGameActive;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI heatText;
+    [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Image HeatBar;
     [SerializeField] private GameObject smeltingUI;
 
@@ -24,14 +37,24 @@ public class SmeltingGame : MonoBehaviour
     public void StartMinigame()
     {
         isMinigameActive = true;
+        isMinigameFinnished = false;
+        timerStarted = false;
+        smeltTimer = 0f;
+        currentHeat = 0f;
+        heatAccumulator = 0f;
+        heatSampleCount = 0;
+        averageHeat = 0f;
         Debug.Log("Smelting minigame started.");
     }
 
     public void EndMinigame()
     {
         isMinigameActive = false;
-        Debug.Log("Smelting minigame ended.");
+        isMinigameFinnished = false;
+        timerStarted = false;
+        smeltTimer = 0f;
         currentHeat = 0f;
+        Debug.Log("Smelting minigame ended.");
     }
 
     private void Update()
@@ -42,31 +65,50 @@ public class SmeltingGame : MonoBehaviour
 
         if (!isMinigameActive) { return; }
 
-        if (currentHeat > 0f) { currentHeat -= heatDecreaseRate * Time.deltaTime; }
-
-        if (Keyboard.current.xKey.wasPressedThisFrame)
+        if (!timerStarted)
         {
-            currentHeat += heatIncreaseRate;
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                timerStarted = true;
+                currentHeat += heatIncreaseRate;
+                Debug.Log("Smelting timer started!!!");
+            }
+
+            return;
+
         }
 
+        smeltTimer += Time.deltaTime;
+
+        if (smeltTimer > 0f) { currentHeat -= heatDecreaseRate * Time.deltaTime; }
+
+        if (Mouse.current.leftButton.wasPressedThisFrame) { currentHeat += heatIncreaseRate; }
+
+        heatAccumulator += currentHeat;
+        heatSampleCount++;
+
+        if(smeltTimer >= smeltDuration)
+        {
+            timerStarted = false;
+            averageHeat = heatSampleCount > 0 ? heatAccumulator / heatSampleCount : 0f;
+            isMinigameActive = false;
+            isMinigameFinnished = true;
+
+            
+            Debug.Log($"Smelting done! Average heat: {averageHeat:F1}");
+        }
     }
 
     public float CalculatedScore()
     {
-        float score;
-        
         if(currentHeat >= requiredHeat)
         {
-            score = 100f;
-            return score;
+            return 100f;
         }
 
-        score = currentHeat;
-        return score;
-
+        return (averageHeat / requiredHeat) * 100f;
 
     }
-
 
     private void HandleUI()
     {
@@ -75,7 +117,28 @@ public class SmeltingGame : MonoBehaviour
         int heatDisplay = Mathf.FloorToInt(currentHeat);
         heatText.text = "Heat: " + heatDisplay;
 
+        if (timerText != null)
+        {
+            if (timerStarted)
+            {
+                float remaing = smeltDuration - smeltTimer;
+                timerText.text = "Time: " + remaing.ToString("F1") + " s";
+            }
+            else
+            {
+                timerText.text = isMinigameActive ? "Left click to start!" : "";
+            }
+        }
+
+        if(scoreText != null)
+        {
+            scoreText.text = "Score: " + averageHeat.ToString("F1");
+            scoreText.gameObject.SetActive(isMinigameFinnished);
+        }
+
         float heatPercent = currentHeat / requiredHeat;
         HeatBar.fillAmount = heatPercent;
     }
+
+
 }

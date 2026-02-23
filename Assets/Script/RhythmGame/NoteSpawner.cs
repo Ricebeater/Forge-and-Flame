@@ -31,7 +31,7 @@ public class NoteSpawner : MonoBehaviour
 
         float currentBeat = Conductor.Instance.songPositionInBeats;
 
-        if (nextNoteIndex < notes.Count && notes[nextNoteIndex].timeInBeats <= currentBeat + spawnAheadBeats)
+        while (nextNoteIndex < notes.Count && notes[nextNoteIndex].timeInBeats <= currentBeat + spawnAheadBeats)
         {
             SpawnNote(notes[nextNoteIndex]);
             nextNoteIndex++;
@@ -61,5 +61,16 @@ public class NoteSpawner : MonoBehaviour
         NoteController ctrl = noteObj.GetComponent<NoteController>();
 
         ctrl.Init(data, spawnAheadBeats, hitLineY, spawnPos);
+    }
+
+    public void ClearOldNotes()
+    {
+        foreach(Transform child in spawnCanvas)
+        {
+            Destroy(child.gameObject);
+        }
+
+        notes.Clear();
+        nextNoteIndex = 0;
     }
 }

@@ -126,4 +126,12 @@ public class NoteController : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    private void OnDestroy()
+    {
+        if(HitManager.Instance != null)
+        {
+            HitManager.Instance.UnregisterNote(this);
+        }   
+    }
 }

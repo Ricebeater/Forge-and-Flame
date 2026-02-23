@@ -6,9 +6,10 @@ public class SongmapLoader : MonoBehaviour
 {
     public NoteSpawner noteSpawner;
 
-    private void Start()
+    public void StartGame()
     {
         LoadLevel("Loyalty.json");
+        Debug.Log("Game Started with Songmap!");
     }
 
     private void LoadLevel(string filename)
@@ -22,6 +23,7 @@ public class SongmapLoader : MonoBehaviour
             SongmapData songmapData = JsonUtility.FromJson<SongmapData>(jsonContent);
 
             Debug.Log($"Loaded Song: {songmapData.title} by {songmapData.artist}");
+
             InitializeGame(songmapData);
         }
         else
@@ -40,4 +42,5 @@ public class SongmapLoader : MonoBehaviour
             noteSpawner.SetNotes(data.notes);
         }
     }
+
 }

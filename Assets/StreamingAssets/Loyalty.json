@@ -1,7 +1,7 @@
 {
     "title": "Loyalty",
     "artist": "KGLW",
-    "bpm":  67,
+    "bpm":  167,
     "startOffset": 0,
     "notes" : [
         {"timeInBeats" : 10.00, "lane" : 0, "type" : 0},
