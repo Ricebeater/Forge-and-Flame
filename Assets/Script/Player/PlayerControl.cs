@@ -6,12 +6,6 @@ using UnityEngine.InputSystem;
 public class PlayerControl : MonoBehaviour
 {
     private Rigidbody rb;
-
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float groundDragStop = 5f;
-    [SerializeField] private float groundDragMove = 5f;
-    [SerializeField] private bool isWalking;
     
     [Header("Player Camera")]
     [SerializeField, Range(0.01f, 1.00f)] private float camRotateSpeed;
@@ -21,13 +15,13 @@ public class PlayerControl : MonoBehaviour
     public bool isWorkingAtStation;
     [HideInInspector] public bool _isWorkingAtStation => isWorkingAtStation;
 
-    private InputAction moveAction;
     private InputAction lookAction;
     private InputAction escapeAction;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        lookAction = InputSystem.actions.FindAction("Look");
         escapeAction = InputSystem.actions.FindAction("Escape");
     }
 
@@ -35,10 +29,6 @@ public class PlayerControl : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        moveAction = InputSystem.actions.FindAction("Move");
-        lookAction = InputSystem.actions.FindAction("Look");
-        escapeAction = InputSystem.actions.FindAction("Escape");
 
         isWorkingAtStation = false;
     }
@@ -51,25 +41,6 @@ public class PlayerControl : MonoBehaviour
         { EnableMouseCursor(); }
         
         Looking();
-        rb.linearDamping = isWalking ? groundDragMove : groundDragStop;
-
-    }
-
-    private void FixedUpdate()
-    {
-        Walking();
-    }
-
-    private void Walking()
-    {
-
-        Vector2 inputVector = moveAction.ReadValue<Vector2>();
-
-        Vector3 moveDir = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized;
-
-        rb.AddForce(moveDir * moveSpeed * Time.fixedDeltaTime, ForceMode.Force);
-
-        isWalking = inputVector.magnitude > 0.1f;
 
     }
 

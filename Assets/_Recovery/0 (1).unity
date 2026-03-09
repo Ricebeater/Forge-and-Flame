@@ -1018,17 +1018,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292288771}
   m_CullTransparentMesh: 1
---- !u!114 &295376081 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6762449070364377065, guid: 37e82588734499e4399505808c4f1695, type: 3}
-  m_PrefabInstance: {fileID: 1161844700346117466}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0913c0d3abbac54188da597b763853d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmeltingStation
 --- !u!1 &296748661
 GameObject:
   m_ObjectHideFlags: 0
@@ -3769,7 +3758,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   customerNPC: {fileID: 1805459577}
-  smeltingStation: {fileID: 295376081}
+  smeltingStation: {fileID: 1517398080}
   forgingStation: {fileID: 1682765008}
   quenchingStation: {fileID: 1365072625}
   orientation: {fileID: 330585546}
@@ -5140,6 +5129,17 @@ Transform:
   - {fileID: 1591366109}
   m_Father: {fileID: 1004371772}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1517398080 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6762449070364377065, guid: 37e82588734499e4399505808c4f1695, type: 3}
+  m_PrefabInstance: {fileID: 1161844700346117466}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0913c0d3abbac54188da597b763853d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmeltingStation
 --- !u!1 &1519386927
 GameObject:
   m_ObjectHideFlags: 0

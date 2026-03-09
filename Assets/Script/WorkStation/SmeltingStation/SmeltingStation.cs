@@ -10,7 +10,7 @@ public class SmeltingStation : StationBase
         if (!OrderManager.Instance.IsCurrentStep(CraftingStep.Smelting))
         {
             Debug.Log("you shouldn't be smeltin' this!");
-            return;
+            //return;
         }
 
         base.Interact(player);

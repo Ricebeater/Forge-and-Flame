@@ -11,6 +11,12 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactLayerMask;
 
+    [Header("Stations")]
+    [SerializeField] private CustomerNPC customerNPC;
+    [SerializeField] private SmeltingStation smeltingStation;
+    [SerializeField] private ForgingStation forgingStation;
+    [SerializeField] private QuenchingStation quenchingStation;
+
     private IInteractable currentInteractable;
 
     [SerializeField] private Transform orientation;
@@ -36,6 +42,12 @@ public class PlayerInteractor : MonoBehaviour
         playerControl = GetComponent<PlayerControl>();
     }
     #endregion
+
+    private void Start()
+    {
+        currentInteractable = smeltingStation;
+        smeltingStation.Interact(this);
+    }
 
     private void Update()
     {
