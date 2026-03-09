@@ -3,6 +3,8 @@ using UnityEngine;
 public class CustomerNPC : BaseInteractable, IInteractable
 {
     [SerializeField] private NPCDataSO data;
+    [SerializeField] private Transform playerStayPosition;
+    [SerializeField] private float trasitionDuration = 0.4f;
 
     private bool hasGivenOrder = false;
 
@@ -11,7 +13,6 @@ public class CustomerNPC : BaseInteractable, IInteractable
         PlayerControl control = player.GetComponent<PlayerControl>();
         if (control != null)
         {
-            control.isWorkingAtStation = false;
             OrderUI.Instance.HideChat();
 
             if (!hasGivenOrder) { OrderUI.Instance.HideOrder(); }
@@ -27,13 +28,12 @@ public class CustomerNPC : BaseInteractable, IInteractable
             return; 
         }
 
-
         CraftingStep currentStep = OrderManager.Instance.CurrentStep;
         
         PlayerControl control = player.GetComponent<PlayerControl>();
         if (control != null)
         {
-            control.isWorkingAtStation = true;
+            control.AlignToStation(playerStayPosition, trasitionDuration);
             OrderUI.Instance.ShowOrder(data);
             OrderUI.Instance.UpdateStep(currentStep);
         }

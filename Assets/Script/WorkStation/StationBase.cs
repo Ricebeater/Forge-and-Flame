@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StationBase : BaseInteractable
 {
-    [SerializeField] private Transform playerStayPosition;
+    public Transform playerStayPosition;
     [SerializeField] private float trasitionDuration = 0.4f;
 
     [SerializeField] private GameObject interactPrompt;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
+using System.Collections;
+using System;
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -17,23 +18,17 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private ForgingStation forgingStation;
     [SerializeField] private QuenchingStation quenchingStation;
 
+    [SerializeField] private float deliveryDialogueDelay = 3f;
+    [SerializeField] private float orderDialogDelay = 3f;
+
     private IInteractable currentInteractable;
 
     [SerializeField] private Transform orientation;
 
     private PlayerControl playerControl;
 
-    #region Starting
-
-    private void OnEnable()
-    {
-        inputActions.FindActionMap("Player").Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions.FindActionMap("Player").Disable();
-    }
+    private void OnEnable() => inputActions.FindActionMap("Player").Enable();
+    private void OnDisable() => inputActions.FindActionMap("Player").Disable();
 
     private void Awake()
     {
@@ -41,75 +36,106 @@ public class PlayerInteractor : MonoBehaviour
         escapeAction = InputSystem.actions.FindAction("Escape");
         playerControl = GetComponent<PlayerControl>();
     }
-    #endregion
 
     private void Start()
     {
-        currentInteractable = smeltingStation;
-        smeltingStation.Interact(this);
+        OrderManager.Instance.onStepChange.AddListener(OnStepChanged);
+
     }
 
     private void Update()
     {
-        GetLookedAtObject();
+        DebugCurrentStep();
 
-        if (interactAction.WasPressedThisFrame())
+        HandleEscape();
+
+        if (OrderManager.Instance.CurrentStep == CraftingStep.Idle)
         {
-            Debug.Log("Interact pressed");
-
-            if (currentInteractable != null)
-            {
-                currentInteractable.OnHoverExit();
-
-                currentInteractable.Interact(this);
-            }
-
-        }
-
-        if (escapeAction.WasPressedThisFrame())
-        {
-            Debug.Log("Escape pressed");
-
-            if (currentInteractable != null)
-            {
-                currentInteractable.EscapeInteract(this);
-            }
+            HandleInteract();
         }
     }
 
-    private void GetLookedAtObject()
+    private void HandleInteract()
     {
-        if (playerControl._isWorkingAtStation) { return; }
+        if (!interactAction.WasPressedThisFrame()) return;
 
-        RaycastHit hit;
-        if (Physics.Raycast(orientation.transform.position, orientation.transform.forward, out hit, interactRange, interactLayerMask))
-        {
-            if (hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
-            {
-                if (currentInteractable != interactable)
-                {
-                    if (currentInteractable != null)
-                    {
-                        currentInteractable.OnHoverExit();
-                    }
-                    currentInteractable = interactable;
-                    currentInteractable.OnHoverEnter();
-                }
-                return;
-            }   
-        }
-        if (currentInteractable != null)
-        {
-            currentInteractable.OnHoverExit();
-            currentInteractable = null;
-        }
+        currentInteractable = customerNPC;
+        customerNPC.Interact(this);
     }
 
-    private void OnDrawGizmos()
+    private void HandleEscape()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(orientation.transform.position, orientation.transform.forward * interactRange);
+        if (!escapeAction.WasPressedThisFrame()) return;
+        if (currentInteractable == null) return;
+
+        var leaving = currentInteractable;
+        currentInteractable = null;
+
+        leaving.EscapeInteract(this);
     }
 
-    
+    private void ActivateStation(StationBase station)
+    {
+        OrderUI.Instance?.HideChat();
+
+        currentInteractable = station;
+        station.Interact(this);
+    }
+
+    private void OnStepChanged(CraftingStep step)
+    {
+        switch (step)
+        {
+            case CraftingStep.Smelting:
+                StartCoroutine(AdvanceToStationAfterDelay(smeltingStation, orderDialogDelay));
+                break;
+
+            case CraftingStep.Forging:
+                ActivateStation(forgingStation);
+                break;
+
+            case CraftingStep.Quenching:
+                ActivateStation(quenchingStation);
+                break;
+
+            case CraftingStep.Delivery:
+                StartCoroutine(DeliveryRoutine());
+                break;
+
+            case CraftingStep.Complete:
+            case CraftingStep.Idle:
+                break;
+        }
+
+    }
+    private IEnumerator AutoStartRoutine()
+    {
+        yield return null;
+
+        currentInteractable = customerNPC;
+        customerNPC.Interact(this);
+    }
+
+    private IEnumerator AdvanceToStationAfterDelay(StationBase station, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ActivateStation(station);
+    }
+
+    private IEnumerator DeliveryRoutine()
+    {
+        currentInteractable = customerNPC;
+        customerNPC.Interact(this);
+
+        yield return new WaitForSeconds(deliveryDialogueDelay);
+
+        OrderUI.Instance?.HideChat();
+        playerControl.isWorkingAtStation = false;
+        currentInteractable = null;
+    }
+
+    private void DebugCurrentStep()
+    {
+        if (Keyboard.current.cKey.wasPressedThisFrame) { Debug.Log("Current Step: " + OrderManager.Instance.CurrentStep); }
+    }
 }
