@@ -13,7 +13,7 @@ public class QuenchingGame : MonoBehaviour
     [SerializeField] private float maxChargeNeed;
     [SerializeField] private int roundRequire = 3;
     public bool isMiniGameActive = false;
-    private bool isMiniGameFinnised = false;
+    [SerializeField]private bool isMiniGameFinnised = false;
     
     //scoring
     private int currentRound = 0;
@@ -48,6 +48,8 @@ public class QuenchingGame : MonoBehaviour
         HandleUI(isMiniGameActive);
         
         if (!isMiniGameActive) { return; }
+
+        if (isMiniGameFinnised) { return; }
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {

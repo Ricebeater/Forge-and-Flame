@@ -28,6 +28,11 @@ public class OrderManager : MonoBehaviour
     private float forgeScore;
     private float quenchScore;
 
+    public float SmeltScore => smeltScore;
+    public float ForgeScore => forgeScore;
+    public float QuenchScore => quenchScore;
+
+
     private void Awake()
     {
         if (Instance == null)

@@ -64,7 +64,7 @@ public class PlayerControl : MonoBehaviour
         orientation.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 
-    private void DisableMouseCursor()
+    public void DisableMouseCursor()
     {
         if (Cursor.lockState == CursorLockMode.None)
         {
@@ -76,7 +76,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void EnableMouseCursor()
+    public void EnableMouseCursor()
     {
         if (Cursor.lockState == CursorLockMode.Locked)
         {

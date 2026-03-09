@@ -99,7 +99,7 @@ public class PlayerInteractor : MonoBehaviour
                 break;
 
             case CraftingStep.Delivery:
-                StartCoroutine(DeliveryRoutine());
+                StartCoroutine(SummaryThenDeliveryRoutine());
                 break;
 
             case CraftingStep.Complete:
@@ -108,12 +108,22 @@ public class PlayerInteractor : MonoBehaviour
         }
 
     }
-    private IEnumerator AutoStartRoutine()
-    {
-        yield return null;
 
-        currentInteractable = customerNPC;
-        customerNPC.Interact(this);
+    private IEnumerator SummaryThenDeliveryRoutine()
+    {
+        playerControl.isWorkingAtStation = true;
+
+        bool continued = false;
+        SummaryUI.Instance.OnContinue += () => continued = true;
+        SummaryUI.Instance.Show(
+            OrderManager.Instance.SmeltScore,
+            OrderManager.Instance.ForgeScore,
+            OrderManager.Instance.QuenchScore
+        );
+
+        yield return new WaitUntil(() => continued);
+
+        StartCoroutine(DeliveryRoutine());
     }
 
     private IEnumerator AdvanceToStationAfterDelay(StationBase station)
@@ -130,6 +140,8 @@ public class PlayerInteractor : MonoBehaviour
 
     private IEnumerator DeliveryRoutine()
     {
+        playerControl.isWorkingAtStation = true;
+
         currentInteractable = customerNPC;
         customerNPC.Interact(this);
 
