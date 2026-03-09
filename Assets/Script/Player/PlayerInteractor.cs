@@ -87,7 +87,7 @@ public class PlayerInteractor : MonoBehaviour
         switch (step)
         {
             case CraftingStep.Smelting:
-                StartCoroutine(AdvanceToStationAfterDelay(smeltingStation, orderDialogDelay));
+                StartCoroutine(AdvanceToStationAfterDelay(smeltingStation));
                 break;
 
             case CraftingStep.Forging:
@@ -116,9 +116,15 @@ public class PlayerInteractor : MonoBehaviour
         customerNPC.Interact(this);
     }
 
-    private IEnumerator AdvanceToStationAfterDelay(StationBase station, float delay)
+    private IEnumerator AdvanceToStationAfterDelay(StationBase station)
     {
-        yield return new WaitForSeconds(delay);
+        yield return null; // ignore first time that player press E
+
+        yield return new WaitUntil(() =>
+            Mouse.current.leftButton.wasPressedThisFrame ||
+            Keyboard.current.anyKey.wasPressedThisFrame
+        );
+
         ActivateStation(station);
     }
 
