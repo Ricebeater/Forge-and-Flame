@@ -77,6 +77,7 @@ public class OrderUI : MonoBehaviour
 
         currentStepText.text = step switch
         {
+            CraftingStep.TakeOrder  => "Taking Order",
             CraftingStep.Smelting   => "Step 1: Smelt the metal",
             CraftingStep.Forging    => "Step 2: Forge the blade",
             CraftingStep.Quenching  => "Step 3: Quench the blade",

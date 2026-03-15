@@ -23,9 +23,9 @@ public class PlayerInteractor : MonoBehaviour
 
     private IInteractable currentInteractable;
 
-    [SerializeField] private Transform orientation;
-
+    [SerializeField] private OrderPreviewUI orderPreview;
     private PlayerControl playerControl;
+
 
     private void OnEnable() => inputActions.FindActionMap("Player").Enable();
     private void OnDisable() => inputActions.FindActionMap("Player").Disable();
@@ -86,8 +86,11 @@ public class PlayerInteractor : MonoBehaviour
     {
         switch (step)
         {
+            case CraftingStep.TakeOrder:
+                StartCoroutine(ChatWithCustomer());
+                break;
             case CraftingStep.Smelting:
-                StartCoroutine(AdvanceToStationAfterDelay(smeltingStation));
+                StartCoroutine(ShowSwordPreviewInfo(smeltingStation));
                 break;
 
             case CraftingStep.Forging:
@@ -126,7 +129,7 @@ public class PlayerInteractor : MonoBehaviour
         StartCoroutine(DeliveryRoutine());
     }
 
-    private IEnumerator AdvanceToStationAfterDelay(StationBase station)
+    private IEnumerator ChatWithCustomer()
     {
         yield return null; // ignore first time that player press E
 
@@ -134,6 +137,20 @@ public class PlayerInteractor : MonoBehaviour
             Mouse.current.leftButton.wasPressedThisFrame ||
             Keyboard.current.anyKey.wasPressedThisFrame
         );
+
+        OrderManager.Instance.CompleteStep(CraftingStep.TakeOrder,0);
+        OrderUI.Instance.HideChat();
+    }
+
+    private IEnumerator ShowSwordPreviewInfo(StationBase station)
+    {
+        yield return null; // ignore first time that player press E
+
+        bool proceeded = false;
+        OrderPreviewUI.Instance.OnProceed += () => proceeded = true;
+        OrderPreviewUI.Instance.ShowPreview(OrderManager.Instance.GetCurrentOrder()?.requestedSword);
+
+        yield return new WaitUntil(() => proceeded);
 
         ActivateStation(station);
     }

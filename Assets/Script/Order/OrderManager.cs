@@ -54,7 +54,7 @@ public class OrderManager : MonoBehaviour
         }
 
         currentOrder = order;
-        CurrentStep = CraftingStep.Smelting;
+        CurrentStep = CraftingStep.TakeOrder;
         onStepChange?.Invoke(CurrentStep);
 
         Debug.Log($"Order received: {order.requestedSword.swordName}. Start at the smelter!");
@@ -69,6 +69,11 @@ public class OrderManager : MonoBehaviour
     {
         switch (step)
         {
+            case CraftingStep.TakeOrder:
+                Debug.Log("Order accepted. Heading to smelter!");
+                CurrentStep = CraftingStep.Smelting;
+                break;
+
             case CraftingStep.Smelting:
                 smeltScore = score;
                 Debug.Log($"Smelting done. Score: {score:F1}");
