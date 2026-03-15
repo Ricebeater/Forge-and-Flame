@@ -13,6 +13,11 @@ public class SmeltingStation : StationBase
             //return;
         }
 
+        if(DayManager.Instance.dayNumber == 1)
+        {
+            TutorialUI.Instance.ShowTutorial(TutorialUI.Instance.smeltingTutorial, DayManager.Instance.IsFirstDay());
+        }
+
         base.Interact(player);
         gameScript?.StartMinigame();
         

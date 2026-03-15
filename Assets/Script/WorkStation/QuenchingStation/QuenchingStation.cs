@@ -13,6 +13,11 @@ public class QuenchingStation : StationBase
             return;
         }
 
+        if (DayManager.Instance.dayNumber == 1)
+        {
+            TutorialUI.Instance.ShowTutorial(TutorialUI.Instance.quenchingTutorial, DayManager.Instance.IsFirstDay());
+        }
+
         base.Interact(player);
         gameScript?.StartMinigame();
         

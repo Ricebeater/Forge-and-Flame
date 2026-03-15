@@ -37,4 +37,10 @@ public class DayManager : MonoBehaviour
 
         dayNumber++;
     }
+
+    public bool IsFirstDay()
+    {
+        if (dayNumber == 1) { return true; }
+        else { return false; }
+    }
 }

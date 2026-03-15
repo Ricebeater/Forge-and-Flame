@@ -62,6 +62,7 @@ public class SummaryUI : MonoBehaviour
     public void DismissSummary()
     {
         panel.SetActive(false);
+        Debug.Log("Dismiss Pressed");
         OnContinue?.Invoke();
     }
 

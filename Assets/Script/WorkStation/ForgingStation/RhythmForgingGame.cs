@@ -19,6 +19,8 @@ public class RhythmForgingGame : MonoBehaviour
 
     public void StartMiniGame()
     {
+        if (TutorialUI.Instance.isTutorialShow) { return; }
+     
         isMiniGameActive = true;
         isMiniGameFinnished = false;
         game.SetActive(true);
@@ -26,7 +28,6 @@ public class RhythmForgingGame : MonoBehaviour
 
         Conductor.Instance.ResetAudio();
         
-
         if (mapLoader != null)
         {
             mapLoader.StartGame();
@@ -58,6 +59,7 @@ public class RhythmForgingGame : MonoBehaviour
     private void Update()
     {
         if (!isMiniGameActive) { return; }
+        if (TutorialUI.Instance.isTutorialShow) { return; }
 
         if(Conductor.Instance.endBeat > 0f && Conductor.Instance.songPositionInBeats >= Conductor.Instance.endBeat)
         {

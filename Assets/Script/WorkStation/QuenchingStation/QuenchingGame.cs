@@ -16,7 +16,7 @@ public class QuenchingGame : MonoBehaviour
     [SerializeField]private bool isMiniGameFinnised = false;
     
     //scoring
-    private int currentRound = 0;
+    [SerializeField]private int currentRound = 0;
     private float[] roundScore;
 
     [Header("Debug")]
@@ -32,11 +32,15 @@ public class QuenchingGame : MonoBehaviour
     [SerializeField] private GameObject miniGameUI;
     [SerializeField] private Image chargeNeedBar;
 
+    //fix tutorial proceed button on relaese bug when closing tutorial
+    [Header("Debug")]
+    [SerializeField] private bool firstClick;
 
     private void Start()
     {
         roundScore = new float[roundRequire];
 
+        firstClick = false;
         currentCharge = 0f;
         currentRound = 0;
         chargeBar.fillAmount = 0f;
@@ -48,6 +52,7 @@ public class QuenchingGame : MonoBehaviour
         HandleUI(isMiniGameActive);
         
         if (!isMiniGameActive) { return; }
+        if (TutorialUI.Instance.isTutorialShow) { return; }
 
         if (isMiniGameFinnised) { return; }
 
@@ -73,15 +78,22 @@ public class QuenchingGame : MonoBehaviour
 
         if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
-            StopCharging();
+            if (firstClick)
+            {
+                StopCharging();
 
-            currentRound++;
+                currentRound++;
 
-             if (currentRound >= roundRequire)
-             {
-                isMiniGameFinnised = true;
-                CalculatedScore();
-                currentRound = 0;
+                if (currentRound >= roundRequire)
+                {
+                    isMiniGameFinnised = true;
+                    CalculatedScore();
+                    currentRound = 0;
+                }
+            }
+            else
+            {
+                firstClick = true;
             }
         }
 
@@ -90,6 +102,8 @@ public class QuenchingGame : MonoBehaviour
 
     public void StartMinigame()
     {
+        if (TutorialUI.Instance.isTutorialShow) { return; }
+
         roundScore = new float[roundRequire];
         isMiniGameActive = true;
         isMiniGameFinnised = false;
@@ -103,6 +117,7 @@ public class QuenchingGame : MonoBehaviour
         isMiniGameActive = false;
         currentCharge = 0f;
         currentRound = 0;
+        firstClick = false;
 
         if (scoreText != null)
         {

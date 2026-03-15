@@ -13,7 +13,12 @@ public class ForgingStation : StationBase
             Debug.Log("Do not hammer it!");
             return;
         }
-        
+
+        if (DayManager.Instance.dayNumber == 1)
+        {
+            TutorialUI.Instance.ShowTutorial(TutorialUI.Instance.forgingTutorial, DayManager.Instance.IsFirstDay());
+        }
+
         base.Interact(player);
         gameScript?.StartMiniGame();
     }
