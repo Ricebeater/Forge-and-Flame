@@ -13,10 +13,13 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private LayerMask interactLayerMask;
 
     [Header("Stations")]
-    [SerializeField] private CustomerNPC customerNPC;
     [SerializeField] private SmeltingStation smeltingStation;
     [SerializeField] private ForgingStation forgingStation;
     [SerializeField] private QuenchingStation quenchingStation;
+
+    [Header("Customer")]
+    [SerializeField] private CustomerSpawner customerSpawner;
+    private CustomerNPC customerNPC => customerSpawner.currentCustomer;
 
     [SerializeField] private float deliveryDialogueDelay = 3f;
     [SerializeField] private float orderDialogDelay = 3f;
@@ -89,6 +92,7 @@ public class PlayerInteractor : MonoBehaviour
             case CraftingStep.TakeOrder:
                 StartCoroutine(ChatWithCustomer());
                 break;
+
             case CraftingStep.Smelting:
                 StartCoroutine(ShowSwordPreviewInfo(smeltingStation));
                 break;
@@ -167,6 +171,8 @@ public class PlayerInteractor : MonoBehaviour
         OrderUI.Instance?.HideChat();
         playerControl.isWorkingAtStation = false;
         currentInteractable = null;
+    
+        DayManager.Instance.EndDay();
     }
 
     private void DebugCurrentStep()

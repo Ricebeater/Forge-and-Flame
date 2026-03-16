@@ -13,6 +13,9 @@ public class SummaryUI : MonoBehaviour
     [Header("Panel")]
     [SerializeField] private GameObject panel;
 
+    [Header("Day Info")]
+    [SerializeField] private TextMeshProUGUI dayText;
+
     [Header("Sword Data")]
     [SerializeField] private TextMeshProUGUI swordNameText;
     [SerializeField] private Image swordIcon;
@@ -35,11 +38,17 @@ public class SummaryUI : MonoBehaviour
 
     public void Show(float smelt, float forge, float quench)
     {
+        if (dayText != null)
+        {
+            dayText.text = "Day " + DayManager.Instance.dayNumber.ToString();
+        }
+
         SwordDataSO sword = OrderManager.Instance.GetCurrentOrder()?.requestedSword;
         if (sword != null)
         {
             swordNameText.text = sword.name;
             swordIcon.sprite = sword.icon;
+
         }
 
         float final = (smelt + forge + quench) / 3f;

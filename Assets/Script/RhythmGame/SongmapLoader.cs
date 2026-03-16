@@ -8,8 +8,15 @@ public class SongmapLoader : MonoBehaviour
 
     public void StartGame()
     {
-        LoadLevel("Blue-Danube.json");
-        Debug.Log("Game Started with Songmap!");
+        string songFile = DayManager.Instance.currentDay?.songfileName;
+
+        if (string.IsNullOrEmpty(songFile))
+        {
+            Debug.LogWarning($"can't find song with name {songFile}");
+        }
+
+        LoadLevel(songFile);
+        Debug.Log($"Game Started. Now playing {songFile}");
     }
 
     private void LoadLevel(string filename)

@@ -6,11 +6,16 @@ public class DayManager : MonoBehaviour
     public static DayManager Instance { get; private set; }
 
     public int dayNumber = 1;
-    public int customersPerDay = 5;
 
+    [Header("Event")]
     public UnityEvent OnDayStart;
     public UnityEvent OnDayEnd;
 
+    public DaySO[] days;
+    public DaySO currentDay => days != null && dayNumber - 1 < days.Length 
+        ? days[dayNumber - 1] 
+        : null;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -24,6 +29,11 @@ public class DayManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartDay();
+    }
+
     public void StartDay()
     {
         Debug.Log($"Day {dayNumber} start");
@@ -34,8 +44,8 @@ public class DayManager : MonoBehaviour
     {
         Debug.Log("Day Ended.");
         OnDayEnd?.Invoke();
-
         dayNumber++;
+        StartDay();
     }
 
     public bool IsFirstDay()

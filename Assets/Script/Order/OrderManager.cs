@@ -45,6 +45,17 @@ public class OrderManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        DayManager.Instance.OnDayStart.AddListener(OnDayStart);
+    }
+
+    private void OnDayStart()
+    {
+        currentOrder = null;
+        CurrentStep = CraftingStep.Idle;
+    }
+
     public void ReceiveOrder(SwordOrderSO order)
     {
         if(order == null)
@@ -135,5 +146,7 @@ public class OrderManager : MonoBehaviour
         Debug.Log($"{swordData.swordName} spawned in player's hand.");
     }
 
-    public SwordOrderSO GetCurrentOrder() => order;
+    public SwordOrderSO GetCurrentOrder() => currentOrder;
+
+    
 }

@@ -6,7 +6,12 @@ public class CustomerNPC : BaseInteractable, IInteractable
     [SerializeField] private Transform playerStayPosition;
     [SerializeField] private float trasitionDuration = 0.4f;
 
-    private bool hasGivenOrder = false;
+    [SerializeField] private bool hasGivenOrder = false;
+
+    private void OnEnable()
+    {
+        hasGivenOrder = false;
+    }
 
     public override void EscapeInteract(PlayerInteractor player)
     {
@@ -36,6 +41,7 @@ public class CustomerNPC : BaseInteractable, IInteractable
             control.AlignToStation(playerStayPosition, trasitionDuration);
             OrderUI.Instance.ShowOrder(data);
             OrderUI.Instance.UpdateStep(currentStep);
+            Debug.Log($"Aligning to {playerStayPosition.name} on NPC {gameObject.name}");
         }
         
         if (currentStep == CraftingStep.Idle && !hasGivenOrder)

@@ -40,7 +40,6 @@ public class QuenchingGame : MonoBehaviour
     {
         roundScore = new float[roundRequire];
 
-        firstClick = false;
         currentCharge = 0f;
         currentRound = 0;
         chargeBar.fillAmount = 0f;
@@ -104,6 +103,14 @@ public class QuenchingGame : MonoBehaviour
     {
         if (TutorialUI.Instance.isTutorialShow) { return; }
 
+        if (DayManager.Instance.dayNumber == 1)
+        {
+            firstClick = false;
+        }
+        else
+        {
+            firstClick = true;
+        }
         roundScore = new float[roundRequire];
         isMiniGameActive = true;
         isMiniGameFinnised = false;
@@ -117,7 +124,15 @@ public class QuenchingGame : MonoBehaviour
         isMiniGameActive = false;
         currentCharge = 0f;
         currentRound = 0;
-        firstClick = false;
+        
+        if (DayManager.Instance.dayNumber == 1)
+        {
+            firstClick = false;
+        }
+        else
+        {
+            firstClick = true;
+        }
 
         if (scoreText != null)
         {

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
+using System;
+using Unity.VisualScripting;
 
 public class SmeltingGame : MonoBehaviour
 {
@@ -32,6 +34,7 @@ public class SmeltingGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Image HeatBar;
     [SerializeField] private GameObject smeltingUI;
+    [SerializeField] private Image TimerCircle;
 
 
     public void StartMinigame()
@@ -44,6 +47,7 @@ public class SmeltingGame : MonoBehaviour
         heatAccumulator = 0f;
         heatSampleCount = 0;
         averageHeat = 0f;
+        TimerCircle.fillAmount = smeltDuration;
         Debug.Log("Smelting minigame started.");
     }
 
@@ -127,6 +131,7 @@ public class SmeltingGame : MonoBehaviour
             {
                 float remaing = smeltDuration - smeltTimer;
                 timerText.text = "Time: " + remaing.ToString("F1") + " s";
+                TimerCircle.fillAmount = remaing/smeltDuration;
             }
             else
             {
