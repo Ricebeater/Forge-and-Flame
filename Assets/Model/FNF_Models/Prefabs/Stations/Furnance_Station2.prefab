@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e31e0eeffc5d2ac439e0613006840716, type: 2}
     - target: {fileID: 919132149155446097, guid: b6129846a50901d4aaf6ce79aebe7df4, type: 3}
       propertyPath: m_Name
-      value: FBX_Furnance_Station2
+      value: Furnance_Station2
       objectReference: {fileID: 0}
     - target: {fileID: 1931811468937786312, guid: b6129846a50901d4aaf6ce79aebe7df4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
