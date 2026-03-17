@@ -171,8 +171,13 @@ public class PlayerInteractor : MonoBehaviour
         OrderUI.Instance?.HideChat();
         playerControl.isWorkingAtStation = false;
         currentInteractable = null;
-    
-        DayManager.Instance.EndDay();
+
+        FadeBetweenDay.Instance.SpawnFadeObj();
+        yield return StartCoroutine(FadeBetweenDay.Instance.FadeTransition(() =>
+        {
+            DayManager.Instance.EndDay();
+        }));
+
     }
 
     private void DebugCurrentStep()
