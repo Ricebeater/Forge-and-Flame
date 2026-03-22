@@ -8,6 +8,7 @@ public class HitManager : MonoBehaviour
     public float perfectWindow = 0.1f;
     public float graetWindow = 0.18f;
     public float niceWindow = 0.22f;
+    public float hitableWindow = 0.30f;
 
     public KeyCode[] lanesKey = { KeyCode.A, KeyCode.S, KeyCode.D };
 
@@ -84,6 +85,8 @@ public class HitManager : MonoBehaviour
             Debug.Log("Miss, no note to hit");
             return;
         }
+
+        if(bestDelta > hitableWindow) { return; }
 
         Judgement result;
         if      (bestDelta <= perfectWindow)     { result = Judgement.Perfect; }
