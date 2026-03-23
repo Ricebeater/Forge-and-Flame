@@ -106,7 +106,7 @@ public class PlayerInteractor : MonoBehaviour
                 break;
 
             case CraftingStep.Delivery:
-                StartCoroutine(SummaryThenDeliveryRoutine());
+                StartCoroutine(DeliveryRoutine());
                 break;
 
             case CraftingStep.Complete:
@@ -130,7 +130,33 @@ public class PlayerInteractor : MonoBehaviour
 
         yield return new WaitUntil(() => continued);
 
-        StartCoroutine(DeliveryRoutine());
+        interactAction.Disable();
+
+        FadeBetweenDay.Instance.SpawnFadeObj();
+        yield return StartCoroutine(FadeBetweenDay.Instance.FadeTransition(() =>
+        {
+            DayManager.Instance.EndDay();
+        }));
+
+        interactAction.Enable();
+
+    }
+    
+    private IEnumerator DeliveryRoutine()
+    {
+        playerControl.isWorkingAtStation = true;
+
+        currentInteractable = customerNPC;
+        customerNPC.Interact(this);
+
+        yield return new WaitForSeconds(deliveryDialogueDelay);
+
+        OrderUI.Instance?.HideChat();
+        playerControl.isWorkingAtStation = false;
+        currentInteractable = null;
+
+        StartCoroutine(SummaryThenDeliveryRoutine());
+
     }
 
     private IEnumerator ChatWithCustomer()
@@ -159,29 +185,7 @@ public class PlayerInteractor : MonoBehaviour
         ActivateStation(station);
     }
 
-    private IEnumerator DeliveryRoutine()
-    {
-        playerControl.isWorkingAtStation = true;
-
-        currentInteractable = customerNPC;
-        customerNPC.Interact(this);
-
-        yield return new WaitForSeconds(deliveryDialogueDelay);
-
-        OrderUI.Instance?.HideChat();
-        playerControl.isWorkingAtStation = false;
-        currentInteractable = null;
-        
-        interactAction.Disable();
-
-        FadeBetweenDay.Instance.SpawnFadeObj();
-        yield return StartCoroutine(FadeBetweenDay.Instance.FadeTransition(() =>
-        {
-            DayManager.Instance.EndDay();
-        }));
-
-        interactAction.Enable();
-    }
+    
 
     private void DebugCurrentStep()
     {

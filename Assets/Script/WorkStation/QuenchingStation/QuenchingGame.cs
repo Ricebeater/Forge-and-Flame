@@ -103,6 +103,12 @@ public class QuenchingGame : MonoBehaviour
     {
         if (TutorialUI.Instance.isTutorialShow) { return; }
 
+        //adjust charge needed range base on what day it is
+        int rangeByDay = (20 - (DayManager.Instance.dayNumber) * 5);
+        Debug.Log("random range : " + rangeByDay);
+        maxChargeNeed = Random.Range(20, 90);
+        minChargeNeed = maxChargeNeed - rangeByDay;
+
         if (DayManager.Instance.dayNumber == 1)
         {
             firstClick = false;
@@ -174,8 +180,9 @@ public class QuenchingGame : MonoBehaviour
 
     private void Charging()
     {
-        if  (!isMaxedOut)    { currentCharge += (chargeRate + (currentCharge * 2)) * Time.deltaTime; }
-        if  (isMaxedOut)     { currentCharge -= (chargeRate + (currentCharge * 2)) * Time.deltaTime; }
+        int dayNumber = DayManager.Instance.dayNumber;
+        if  (!isMaxedOut)    { currentCharge += (chargeRate + (currentCharge * 2 * dayNumber)) * Time.deltaTime; }
+        if  (isMaxedOut)     { currentCharge -= (chargeRate + (currentCharge * 2 * dayNumber)) * Time.deltaTime; }
     }
 
     public float CalculatedScore()

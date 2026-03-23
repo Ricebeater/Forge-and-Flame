@@ -17,6 +17,7 @@ public class HammerAnim : MonoBehaviour
 
     void Update()
     {
+        if (!OrderManager.Instance.IsCurrentStep(CraftingStep.Forging)) { anim.Play("Rest", 0, 0f); return; }
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
         {
             anim.Play("Hitting", 0, 0f);

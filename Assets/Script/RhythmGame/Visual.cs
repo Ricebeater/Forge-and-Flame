@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Visual : MonoBehaviour
 {
     [SerializeField] GameObject[] highlightLane;
+    [SerializeField] Image progressBar;
 
     private void Update()
     {
@@ -18,6 +21,8 @@ public class Visual : MonoBehaviour
                 highlightLane[lane].SetActive(false);
             }
         }
+
+        progressBar.fillAmount = Conductor.Instance.songPosition / Conductor.Instance.musicSource.clip.length;
         
     }
 }

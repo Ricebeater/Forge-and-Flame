@@ -36,21 +36,13 @@ public class SummaryUI : MonoBehaviour
         panel.SetActive(false);
     }
 
+    private void Update()
+    {
+        GetSwordIcon();
+    }
+
     public void Show(float smelt, float forge, float quench)
     {
-        if (dayText != null)
-        {
-            dayText.text = "Day " + DayManager.Instance.dayNumber.ToString();
-        }
-
-        SwordDataSO sword = OrderManager.Instance.GetCurrentOrder()?.requestedSword;
-        if (sword != null)
-        {
-            swordNameText.text = sword.name;
-            swordIcon.sprite = sword.icon;
-
-        }
-
         float final = (smelt + forge + quench) / 3f;
 
         smeltRankText.text      = $"{GetRank(smelt)}";
@@ -83,5 +75,21 @@ public class SummaryUI : MonoBehaviour
         if (score >= 60f) return "C";
         if (score >= 40f) return "D";
         return "F";
+    }
+
+    private void GetSwordIcon()
+    {
+        if (dayText != null)
+        {
+            dayText.text = "Day " + DayManager.Instance.dayNumber.ToString();
+        }
+
+        SwordDataSO sword = OrderManager.Instance.GetCurrentOrder()?.requestedSword;
+        if (sword != null)
+        {
+            swordNameText.text = sword.name;
+            swordIcon.sprite = sword.icon;
+
+        }
     }
 }
