@@ -7,6 +7,8 @@ public class Visual : MonoBehaviour
 {
     [SerializeField] GameObject[] highlightLane;
     [SerializeField] Image progressBar;
+    [SerializeField] GameObject niceTextPopUp;
+    [SerializeField] Transform firstLane;
 
     private void Update()
     {
@@ -20,9 +22,13 @@ public class Visual : MonoBehaviour
             {
                 highlightLane[lane].SetActive(false);
             }
+
+            if (Input.GetKeyDown(HitManager.Instance.lanesKey[lane]))
+            {
+                GameObject nicePopUp = Instantiate(niceTextPopUp, firstLane, false);
+            }
         }
 
         progressBar.fillAmount = Conductor.Instance.songPosition / Conductor.Instance.musicSource.clip.length;
-        
     }
 }
