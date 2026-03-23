@@ -105,11 +105,8 @@ public class OrderManager : MonoBehaviour
 
             case CraftingStep.Delivery:
                 CurrentStep = CraftingStep.Complete;
-                SpawnSwordInHand(order.requestedSword);
                 onOrderComplete?.Invoke();
-                LogFinalScore();
-
-                CurrentStep = CraftingStep.Idle;
+                CurrentStep = CraftingStep.Complete;
                 currentOrder = null;
 
                 break;
@@ -118,32 +115,6 @@ public class OrderManager : MonoBehaviour
 
         onStepChange?.Invoke(CurrentStep);
         Debug.Log($"Next Step: {CurrentStep}");
-    }
-
-    private void LogFinalScore()
-    {
-        float finalScore = (smeltScore + forgeScore + quenchScore) /3f;
-        Debug.Log($"Order complete! Final Score: {finalScore:F1}%");
-    }
-
-    private void SpawnSwordInHand(SwordDataSO swordData)
-    {
-        if(swordData.prefab == null)
-        {
-            Debug.LogWarning($"Order Manager: No prefab assigned for {swordData.swordName}");
-            return;
-        }
-
-        if(currentSword != null)
-        {
-            Destroy(currentSword);
-        }
-
-        currentSword = Instantiate(swordData.prefab, playerHand);
-        currentSword.transform.localPosition = Vector3.zero;
-        currentSword.transform.localRotation = Quaternion.identity;
-
-        Debug.Log($"{swordData.swordName} spawned in player's hand.");
     }
 
     public SwordOrderSO GetCurrentOrder() => currentOrder;
