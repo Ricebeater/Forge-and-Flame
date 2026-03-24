@@ -1738,6 +1738,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &300056020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300056015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b4cd45b9621594fb2d257fb6ff6a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BellowAnim
+  anim: {fileID: 0}
 --- !u!1 &320567276
 GameObject:
   m_ObjectHideFlags: 0
@@ -8888,6 +8901,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4070520153325927898, guid: adf3476ea7361bb40a64d23d1b074b82, type: 3}
       insertIndex: -1
       addedObject: {fileID: 300056019}
+    - targetCorrespondingSourceObject: {fileID: 4070520153325927898, guid: adf3476ea7361bb40a64d23d1b074b82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 300056020}
   m_SourcePrefab: {fileID: 100100000, guid: adf3476ea7361bb40a64d23d1b074b82, type: 3}
 --- !u!4 &1228521829 stripped
 Transform:
@@ -14885,7 +14901,6 @@ SceneRoots:
   - {fileID: 1004371772}
   - {fileID: 2085218481}
   - {fileID: 43857587}
-  - {fileID: 1627541034}
   - {fileID: 1568976287}
   - {fileID: 773570617}
   - {fileID: 162643300}
@@ -14893,3 +14908,4 @@ SceneRoots:
   - {fileID: 1522285864}
   - {fileID: 226167678}
   - {fileID: 633380221}
+  - {fileID: 1627541034}
