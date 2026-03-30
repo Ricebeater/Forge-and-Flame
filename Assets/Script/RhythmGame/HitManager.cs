@@ -14,6 +14,8 @@ public class HitManager : MonoBehaviour
 
     private List<NoteController> activeNotes = new List<NoteController>();
 
+    public event System.Action<Judgement, int> OnNoteHit;
+
     //scoring
     private int totalNotes = 0;
     private float scoreAccumulator = 0f;
@@ -95,8 +97,10 @@ public class HitManager : MonoBehaviour
         else                                     { result = Judgement.Miss; }
 
         Debug.Log($"Lane {lane}: {result} (best delta: {bestDelta:F3} beats off)");
+        
         closestNote.Hit(result);
         AddScore(result);
+        OnNoteHit?.Invoke(result, lane);
     }
 
     public void AddScore(Judgement judgement)
