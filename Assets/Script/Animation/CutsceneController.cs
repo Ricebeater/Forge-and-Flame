@@ -6,9 +6,16 @@ public class CutsceneController : MonoBehaviour
     [Header("Cutscene Settings")]
     public PlayableDirector director;
     public GameObject cutsceneCamera;
+    public GameObject playerPOV;
+    private Vector3 oriCamPos;
 
     [Header("Player Settings")]
     public GameObject playerController;
+
+    private void Start()
+    {
+        oriCamPos = playerPOV.transform.position;
+    }
 
     void OnEnable()
     {
@@ -30,8 +37,15 @@ public class CutsceneController : MonoBehaviour
     {
         if (cutsceneCamera != null) cutsceneCamera.SetActive(false);
 
+
         if (playerController != null) playerController.SetActive(true);
 
-        gameObject.SetActive(false); 
+
+        Debug.Log("cutsvene end");
+
+        cutsceneCamera.transform.position = oriCamPos; 
+
+        gameObject.SetActive(false);
+
     }
 }
