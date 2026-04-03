@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Kinght
   m_EditorClassIdentifier: Assembly-CSharp::NPCDataSO
   npcName: Sol
-  portrait: {fileID: 21300000, guid: 96541bae5dab97947a3f03c69a8824a3, type: 3}
+  portrait: {fileID: 21300000, guid: b33e77fb312964d49ac04afc4797675e, type: 3}
   orderDialogue: I am Knight
   waitingDialogue: "Knight waiting\t"
-  deliveryDialogue: Knight thanks
+  deliveryDialogueGood: This is Good
+  deliveryDialogueOkay: This is Okay
+  deliveryDialogueBad: This is Bad
   swordOrder: {fileID: 11400000, guid: 4f718665cad80c74db1cd82fa3133882, type: 2}

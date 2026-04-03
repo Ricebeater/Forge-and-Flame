@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CustomerNPC : BaseInteractable, IInteractable
@@ -7,10 +8,21 @@ public class CustomerNPC : BaseInteractable, IInteractable
     [SerializeField] private float trasitionDuration = 0.4f;
 
     [SerializeField] private bool hasGivenOrder = false;
+    [SerializeField] PlayerInteractor playerInteractor;
 
     private void OnEnable()
     {
         hasGivenOrder = false;
+    }
+
+    public void LockInteraction()
+    {
+        playerInteractor.animationIsPlaying = true;
+    }
+
+    public void UnlockInteraction()
+    {
+        playerInteractor.animationIsPlaying = false;
     }
 
     public override void EscapeInteract(PlayerInteractor player)
@@ -77,9 +89,13 @@ public class CustomerNPC : BaseInteractable, IInteractable
     {
         hasGivenOrder = false;
         OrderManager.Instance.CompleteStep(CraftingStep.Delivery, 0f);
-        OrderUI.Instance.ShowChat(data.npcName, data.deliveryDialogue, data.portrait);
+
+        float final = (OrderManager.Instance.SmeltScore + OrderManager.Instance.ForgeScore + OrderManager.Instance.QuenchScore) / 3f;
+        
+        if (final >= 90f) { OrderUI.Instance.ShowChat(data.npcName, data.deliveryDialogueGood, data.portrait); }
+        else if (final >= 50f) { OrderUI.Instance.ShowChat(data.npcName, data.deliveryDialogueOkay, data.portrait); }
+        else if (final < 50f) { OrderUI.Instance.ShowChat(data.npcName, data.deliveryDialogueBad, data.portrait); }
+
         OrderUI.Instance.HideOrder();
     }
-
-
 }

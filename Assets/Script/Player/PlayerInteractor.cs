@@ -20,6 +20,7 @@ public class PlayerInteractor : MonoBehaviour
     [Header("Customer")]
     [SerializeField] private CustomerSpawner customerSpawner;
     private CustomerNPC customerNPC => customerSpawner.currentCustomer;
+    public bool animationIsPlaying { get; set; } = false;
 
     [SerializeField] private float deliveryDialogueDelay = 3f;
     [SerializeField] private float orderDialogDelay = 3f;
@@ -60,10 +61,15 @@ public class PlayerInteractor : MonoBehaviour
 
     private void HandleInteract()
     {
+        if (animationIsPlaying) return;
+
         if (!interactAction.WasPressedThisFrame()) return;
 
         currentInteractable = customerNPC;
-        customerNPC.Interact(this);
+        if (customerNPC != null)
+        {
+            customerNPC.Interact(this);
+        }
     }
 
     private void HandleEscape()

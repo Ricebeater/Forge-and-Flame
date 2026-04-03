@@ -44,7 +44,6 @@ public class SummaryUI : MonoBehaviour
     public void Show(float smelt, float forge, float quench)
     {
         float final = (smelt + forge + quench) / 3f;
-
         smeltRankText.text      = $"{GetRank(smelt)}";
         forgeRankText.text      = $"{GetRank(forge)}";
         quenchRankText.text     = $"{GetRank(quench)}";
@@ -72,8 +71,7 @@ public class SummaryUI : MonoBehaviour
         if (score >= 100f) return "S";
         if (score >= 90f) return "A";
         if (score >= 75f) return "B";
-        if (score >= 60f) return "C";
-        if (score >= 40f) return "D";
+        if (score >= 50f) return "C";
         return "F";
     }
 

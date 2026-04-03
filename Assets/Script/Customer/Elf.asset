@@ -16,5 +16,7 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 4007090c7f491bf49a5142d6d45006e1, type: 3}
   orderDialogue: Make me ye best dagger... please.
   waitingDialogue: ... back to work.
-  deliveryDialogue: Hmm... Great
+  deliveryDialogueGood: This is Good
+  deliveryDialogueOkay: This is Okay
+  deliveryDialogueBad: This is Bad
   swordOrder: {fileID: 11400000, guid: a1f4c07e3c5605e4086dd14e093a9d69, type: 2}

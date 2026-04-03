@@ -12,6 +12,8 @@ public class QuenchingGame : MonoBehaviour
     [SerializeField] private float minChargeNeed;
     [SerializeField] private float maxChargeNeed;
     [SerializeField] private int roundRequire = 3;
+
+    [Header("For Game")]
     public bool isMiniGameActive = false;
     [SerializeField]private bool isMiniGameFinnised = false;
     

@@ -7,7 +7,7 @@ public class CustomerSpawner : MonoBehaviour
 
     private void Start()
     {
-        SpawnCustomer();
+
     }
 
     public void SpawnCustomer()

@@ -114,7 +114,7 @@ public class SmeltingGame : MonoBehaviour
             return 100f;
         }
 
-        return (averageHeat / requiredHeat) * 100f;
+        return ((averageHeat / requiredHeat) * 100f);
 
     }
 
@@ -141,7 +141,7 @@ public class SmeltingGame : MonoBehaviour
 
         if(scoreText != null)
         {
-            scoreText.text = "Score: " + averageHeat.ToString("F1");
+            scoreText.text = "Score: " + CalculatedScore().ToString("F1");
             scoreText.gameObject.SetActive(isMinigameFinnished);
         }
 
